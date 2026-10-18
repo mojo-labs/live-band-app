@@ -178,7 +178,6 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
     <div class="actions">
       <span class="pill off" id="sync"><span class="dot"></span><span id="sync-text">Local</span></span>
       <button id="btn-use-shared" hidden>Use shared version</button>
-      <button id="btn-code" hidden>Enter edit code</button>
       <button id="btn-transfer" class="ghost">Copy / paste data</button>
       <button id="btn-stage" class="primary">Stage mode ▶</button>
     </div>
@@ -243,15 +242,6 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
   </div>
 </div>
 
-<div class="overlay" id="code" hidden role="dialog" aria-modal="true" aria-label="Edit code">
-  <div class="sheet">
-    <div class="sh-head"><h2>Edit code</h2><button id="code-close">Close</button></div>
-    <p class="hint">Saving to the shared setlist needs the band's edit code. Reading never does.</p>
-    <input id="code-in" type="password" autocomplete="off" aria-label="Edit code">
-    <div class="actions"><button id="code-save" class="primary">Save and retry</button></div>
-  </div>
-</div>
-
 <div class="overlay" id="transfer" hidden>
   <div class="sheet">
     <div class="sh-head"><h2>Copy / paste setlist data</h2><button id="transfer-close">Close</button></div>
@@ -277,7 +267,7 @@ const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slic
 const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
 let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800)}
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#code').hidden||!$('#stset').hidden)}
+function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#stset').hidden)}
 function show(sel,on){$(sel).hidden=!on;lockPage()}
 
 /* ---------- music theory ---------- */
@@ -435,7 +425,7 @@ function normalize(raw){
 let state=normalize(ls.get(S_KEY,null)||defaultState());
 const PLACEHOLDER_RE=/^\s*\{(?:Repeat · add the couplets your version uses|Verse · add your own lines|Sargam jugalbandi · two singers, others take alaps)\}\s*$/;
 function stripPlaceholders(st){let changed=false;for(const it of st.items){if(it.type!=='song')continue;const lines=it.lyrics.split('\n');const kept=lines.filter(l=>!PLACEHOLDER_RE.test(l));if(kept.length!==lines.length){it.lyrics=kept.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n+$/,'');changed=true}}return changed}
-const prefs=Object.assign({fontSize:32,capo:0,inline:true,speed:3,lastId:null,editCode:''},ls.get(P_KEY,{}));
+const prefs=Object.assign({fontSize:32,capo:0,inline:true,speed:3,lastId:null},ls.get(P_KEY,{}));
 const savePrefs=()=>ls.set(P_KEY,prefs);
 let selId=null;
 const songs=()=>state.items.filter(i=>i.type==='song');
@@ -445,7 +435,7 @@ const semisFor=sg=>((keyIdx(performKey(sg))-keyIdx(sg.key))%12+12)%12;
 
 /* ---------- persistence + sync (HTTP API + polling) ---------- */
 const API='/api/setlist';
-const sync={on:false,canWrite:true,remote:null,localDirty:false,pushing:false,pending:false,status:'local',needCode:false,noStore:false,offline:false};
+const sync={on:false,canWrite:true,remote:null,localDirty:false,pushing:false,pending:false,status:'local',noStore:false,offline:false};
 function saveLocal(){ls.set(S_KEY,state)}
 function markChanged(){state.updatedAt=Date.now();saveLocal();if(sync.on&&sync.canWrite)schedulePush();else if(sync.on)sync.localDirty=true;refreshSync();if(!$('#stage').hidden)renderStage(true)}
 const schedulePush=debounce(()=>push(),700);
@@ -455,9 +445,8 @@ async function push(){
   if(sync.pushing){sync.pending=true;return}
   sync.pushing=true;sync.status='saving';refreshSync();
   try{
-    const r=await fetch(API,{method:'PUT',headers:{'content-type':'application/json','x-edit-code':prefs.editCode||''},body:JSON.stringify(state),cache:'no-store'});
-    if(r.status===401){sync.canWrite=false;sync.needCode=true;sync.localDirty=true;sync.status='readonly'}
-    else if(r.status===409){const j=await r.json();if(j&&j.data)adoptRemote(j.data);sync.status='synced';toast('Someone saved a newer version — showing that')}
+    const r=await fetch(API,{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify(state),cache:'no-store'});
+    if(r.status===409){const j=await r.json();if(j&&j.data)adoptRemote(j.data);sync.status='synced';toast('Someone saved a newer version — showing that')}
     else if(r.status===503){sync.noStore=true;sync.status='error'}
     else if(!r.ok)throw 0;
     else{sync.status='synced';sync.localDirty=false;sync.offline=false}
@@ -481,8 +470,8 @@ async function pull(){
   }catch{sync.offline=true;refreshSync()}
 }
 function refreshSync(){
-  const pill=$('#sync'),txt=$('#sync-text'),useBtn=$('#btn-use-shared'),codeBtn=$('#btn-code');
-  pill.className='pill';useBtn.hidden=true;codeBtn.hidden=!sync.needCode;
+  const pill=$('#sync'),txt=$('#sync-text'),useBtn=$('#btn-use-shared');
+  pill.className='pill';useBtn.hidden=true;
   if(!sync.on){pill.classList.add('off');txt.textContent='Saved on this device only';return}
   if(sync.noStore){pill.classList.add('dirty');txt.textContent='Storage not set up on the server';return}
   if(sync.offline){pill.classList.add('dirty');txt.textContent='Offline · saved on this device';return}
@@ -498,10 +487,6 @@ function initSync(){
   window.addEventListener('online',pull);
 }
 $('#btn-use-shared').addEventListener('click',()=>{if(!sync.remote)return;adoptRemote(sync.remote);refreshSync();toast('Using the shared version')});
-$('#btn-code').addEventListener('click',()=>{$('#code-in').value=prefs.editCode||'';show('#code',true);$('#code-in').focus()});
-$('#code-close').addEventListener('click',()=>show('#code',false));
-$('#code').addEventListener('click',e=>{if(e.target===e.currentTarget)show('#code',false)});
-$('#code-save').addEventListener('click',()=>{prefs.editCode=$('#code-in').value.trim();savePrefs();sync.canWrite=true;sync.needCode=false;show('#code',false);push()});
 
 /* ---------- rendering: lyrics ---------- */
 function renderLyricsHTML(sg,opts){
