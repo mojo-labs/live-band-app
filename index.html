@@ -4,33 +4,35 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f5">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#262624">
 <title>Diwali Setlist 2026</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap">
 </head>
 <body>
 <style>
-/* Layout: ordinary single-scroll page in edit mode (header, set key, running order); the song editor opens as a dialog. Stage mode is a fixed full-screen reader with a thin control bar and one scrolling lyric pane. Dark-first: this lives on music stands under stage light. */
+/* Layout: ordinary single-scroll page in edit mode (header, set key, running order); the song editor opens as a dialog. Stage mode is a fixed full-screen reader with a thin control bar and one scrolling lyric pane. Light by default, dark follows the device: warm ivory and charcoal neutrals with one clay accent. */
 :root{
-  color-scheme:dark;
-  --bg:#14111f; --bg-raised:#1d1930; --bg-sunken:#0d0b16; --fg:#f4efe6; --fg-muted:#a89fbe; --line:#2f2947;
-  --accent:#f0a63a; --accent-ink:#1b1206; --chord:#ffbe5c; --label:#8fd3ff;
-  --good:#5fcf8a; --warn:#f0c868; --bad:#f07070; --focus:#8fd3ff;
+  color-scheme:light;
+  --bg:#faf9f5; --bg-raised:#ffffff; --bg-sunken:#f0eee6; --fg:#141413; --fg-muted:#6b6a65; --line:#e3e1d9;
+  --accent:#c96442; --accent-ink:#ffffff; --chord:#b8542f; --label:#6b6a65;
+  --good:#3f7d4e; --warn:#9a6b00; --bad:#b3402e; --focus:#c96442;
   --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-display:"Fraunces",Georgia,"Times New Roman",serif;
   --gutter-l:max(16px,env(safe-area-inset-left,0px)); --gutter-r:max(16px,env(safe-area-inset-right,0px));
 }
-@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  color-scheme:light;
-  --bg:#f7f2ea; --bg-raised:#fffdf9; --bg-sunken:#ebe3d6; --fg:#241c33; --fg-muted:#6a6180; --line:#d8cebf;
-  --accent:#c4621a; --accent-ink:#fffaf2; --chord:#a84d0b; --label:#1f6fa8;
-  --good:#1f8a4c; --warn:#9a6b00; --bad:#b83232; --focus:#1f6fa8;
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#262624; --bg-raised:#30302e; --bg-sunken:#1f1e1d; --fg:#f5f4ef; --fg-muted:#9c9a92; --line:#3d3c39;
+  --accent:#d97757; --accent-ink:#1a1917; --chord:#e5906f; --label:#9c9a92;
+  --good:#7cb98a; --warn:#d9b45c; --bad:#e08273; --focus:#d97757;
 }}
-:root[data-theme="light"]{
-  color-scheme:light;
-  --bg:#f7f2ea; --bg-raised:#fffdf9; --bg-sunken:#ebe3d6; --fg:#241c33; --fg-muted:#6a6180; --line:#d8cebf;
-  --accent:#c4621a; --accent-ink:#fffaf2; --chord:#a84d0b; --label:#1f6fa8;
-  --good:#1f8a4c; --warn:#9a6b00; --bad:#b83232; --focus:#1f6fa8;
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#262624; --bg-raised:#30302e; --bg-sunken:#1f1e1d; --fg:#f5f4ef; --fg-muted:#9c9a92; --line:#3d3c39;
+  --accent:#d97757; --accent-ink:#1a1917; --chord:#e5906f; --label:#9c9a92;
+  --good:#7cb98a; --warn:#d9b45c; --bad:#e08273; --focus:#d97757;
 }
 html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 img{max-width:100%}
@@ -39,14 +41,14 @@ html.locked,html.locked body{overflow:hidden;height:100%}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
 *,*::before,*::after{box-sizing:border-box}
 button,input,select,textarea{font:inherit;color:inherit}
-button{cursor:pointer;background:var(--bg-raised);border:1px solid var(--line);border-radius:10px;padding:0 12px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+button{cursor:pointer;background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:0 12px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
 button:hover{border-color:var(--fg-muted)}
 button.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:700}
 button.ghost{background:transparent}
 button.danger{color:var(--bad)}
 button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:transparent}
 button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-input,select,textarea{background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:40px;width:100%;min-width:0}
+input,select,textarea{background:var(--bg-raised);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-height:40px;width:100%;min-width:0}
 textarea{resize:vertical;line-height:1.5}
 label.f{display:flex;flex-direction:column;gap:4px;min-width:0}
 label.f>span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-muted)}
@@ -64,7 +66,7 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .page{max-width:820px;margin:0 auto;padding-block:0 48px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;padding-block:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:8px;flex:1 1 360px;min-width:0;flex-wrap:wrap}
-.brand .mark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--chord),var(--accent) 60%,transparent 62%);flex:none}
+.brand .mark{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:none;margin-right:2px}
 .brand input#set-title{flex:1 1 200px;font-family:var(--font-display);font-size:22px;font-weight:700;background:transparent;border-color:transparent;padding:4px 6px;min-height:0}
 .brand input#set-title:hover,.brand input#set-title:focus{border-color:var(--line);background:var(--bg-sunken)}
 .brand input#set-date{flex:none;width:12.5em;min-height:38px;padding:4px 10px;font-size:14px;color:var(--fg-muted);background:transparent;border-color:transparent}
@@ -76,15 +78,15 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .keyrow{display:flex;gap:4px;flex-wrap:wrap}
 .keyrow button{min-height:34px;padding:0 10px;font-weight:700;font-variant-numeric:tabular-nums}
 .setbar label.f{flex:1 1 240px}
-.list{background:var(--bg-raised);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.list{background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .list-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .list-head h2{font-size:15px;flex:1}
 .list-head button{min-height:34px;padding:0 10px;font-size:14px}
 #items{list-style:none;margin:0;padding:6px;display:flex;flex-direction:column;gap:2px}
-#items li{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 8px;border-radius:10px;background:var(--bg-raised);border:1px solid transparent}
+#items li{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 8px;border-radius:8px;background:transparent;border:1px solid transparent}
 #items li.song{cursor:pointer;min-height:56px}
 #items li.song:hover{background:var(--bg-sunken)}
-#items li.song.sel{border-color:var(--accent)}
+#items li.song.sel{background:var(--bg-sunken)}
 #items li.section{margin-top:10px;background:transparent;padding-top:10px;border-top:1px solid var(--line);border-radius:0}
 #items li.section:first-child{margin-top:0;border-top:0;padding-top:6px}
 .num{flex:none;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;background:var(--bg-sunken);border:1px solid var(--line);color:var(--fg)}
@@ -118,7 +120,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 .lyr .seg{display:inline-block;vertical-align:bottom}
 .lyr .ch{display:block;height:1.1em;line-height:1.1;font-weight:700;color:var(--chord);font-size:.92em;letter-spacing:.01em}
 .lyr .tx{white-space:pre-wrap}
-.lyr .lbl{display:inline-block;margin:1em 0 .1em;font-size:.5em;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);font-weight:700}
+.lyr .lbl{display:inline-block;margin:1em 0 .1em;font-size:.5em;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);font-weight:400}
 .lyr .ln.chords-only{color:var(--chord);font-weight:700;margin:.4em 0 .2em}
 .lyr .gap{height:1.1em}
 .chordrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -127,7 +129,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 
 /* ---------- Stage mode ---------- */
 #stage{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:20;padding-top:env(safe-area-inset-top,0px)}
-.st-bar{display:flex;align-items:center;gap:8px;padding-block:6px;border-bottom:1px solid var(--line);background:var(--bg-raised);flex-wrap:wrap}
+.st-bar{display:flex;align-items:center;gap:8px;padding-block:6px;border-bottom:1px solid var(--line);background:var(--bg);flex-wrap:wrap}
 .st-bar button,.st-bar select{min-height:38px}
 .st-bar select{width:auto;padding:4px 8px}
 .st-pos{font-variant-numeric:tabular-nums;font-weight:700}
@@ -151,7 +153,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 
 /* ---------- Overlays (song editor, picker, transfer) ---------- */
 .overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(6px);z-index:30;display:flex;align-items:flex-start;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gutter-r) calc(16px + env(safe-area-inset-bottom,0px)) var(--gutter-l);overflow:auto;overscroll-behavior:contain}
-.sheet{background:var(--bg-raised);border:1px solid var(--line);border-radius:16px;width:min(760px,100%);padding:16px;display:flex;flex-direction:column;gap:12px}
+.sheet{background:var(--bg);border:1px solid var(--line);border-radius:12px;width:min(760px,100%);padding:16px;display:flex;flex-direction:column;gap:12px}
 .sheet h2{font-family:var(--font-display);font-size:20px}
 .sheet .sh-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .sheet .sh-head .nav{display:flex;gap:6px;align-items:center}
