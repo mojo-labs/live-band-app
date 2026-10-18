@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Diwali Setlist 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap">
+</head>
+<body>
+<style>
+/* Layout: ordinary single-scroll page in edit mode (header, set key, running order); the song editor opens as a dialog. Stage mode is a fixed full-screen reader with a thin control bar and one scrolling lyric pane. Dark-first: this lives on music stands under stage light. */
+:root{
+  color-scheme:dark;
+  --bg:#14111f; --bg-raised:#1d1930; --bg-sunken:#0d0b16; --fg:#f4efe6; --fg-muted:#a89fbe; --line:#2f2947;
+  --accent:#f0a63a; --accent-ink:#1b1206; --chord:#ffbe5c; --label:#8fd3ff;
+  --good:#5fcf8a; --warn:#f0c868; --bad:#f07070; --focus:#8fd3ff;
+  --font-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --gutter-l:max(16px,env(safe-area-inset-left,0px)); --gutter-r:max(16px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  color-scheme:light;
+  --bg:#f7f2ea; --bg-raised:#fffdf9; --bg-sunken:#ebe3d6; --fg:#241c33; --fg-muted:#6a6180; --line:#d8cebf;
+  --accent:#c4621a; --accent-ink:#fffaf2; --chord:#a84d0b; --label:#1f6fa8;
+  --good:#1f8a4c; --warn:#9a6b00; --bad:#b83232; --focus:#1f6fa8;
+}}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f7f2ea; --bg-raised:#fffdf9; --bg-sunken:#ebe3d6; --fg:#241c33; --fg-muted:#6a6180; --line:#d8cebf;
+  --accent:#c4621a; --accent-ink:#fffaf2; --chord:#a84d0b; --label:#1f6fa8;
+  --good:#1f8a4c; --warn:#9a6b00; --bad:#b83232; --focus:#1f6fa8;
+}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 var(--font-body);-webkit-text-size-adjust:100%}
+html.locked,html.locked body{overflow:hidden;height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+*,*::before,*::after{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:var(--bg-raised);border:1px solid var(--line);border-radius:10px;padding:0 12px;min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+button:hover{border-color:var(--fg-muted)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:700}
+button.ghost{background:transparent}
+button.danger{color:var(--bad)}
+button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+input,select,textarea{background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:40px;width:100%;min-width:0}
+textarea{resize:vertical;line-height:1.5}
+label.f{display:flex;flex-direction:column;gap:4px;min-width:0}
+label.f>span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-muted)}
+.gutter{padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+[hidden]{display:none!important}
+h1,h2,h3{text-wrap:balance;margin:0}
+.muted{color:var(--fg-muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px;font-size:13px;background:var(--bg-sunken);border:1px solid var(--line);white-space:nowrap}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--fg-muted)}
+.pill.ok .dot{background:var(--good)} .pill.busy .dot{background:var(--warn)} .pill.off .dot{background:var(--fg-muted)} .pill.ro .dot{background:var(--label)} .pill.dirty .dot{background:var(--warn)}
+.keychip{display:inline-flex;align-items:center;border-radius:8px;padding:2px 8px;font-weight:700;background:var(--bg-sunken);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.keychip.on{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+
+/* ---------- Edit mode ---------- */
+.page{max-width:820px;margin:0 auto;padding-block:0 48px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;padding-block:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px;flex:1 1 360px;min-width:0;flex-wrap:wrap}
+.brand .mark{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--chord),var(--accent) 60%,transparent 62%);flex:none}
+.brand input#set-title{flex:1 1 200px;font-family:var(--font-display);font-size:22px;font-weight:700;background:transparent;border-color:transparent;padding:4px 6px;min-height:0}
+.brand input#set-title:hover,.brand input#set-title:focus{border-color:var(--line);background:var(--bg-sunken)}
+.brand input#set-date{flex:none;width:12.5em;min-height:38px;padding:4px 10px;font-size:14px;color:var(--fg-muted);background:transparent;border-color:transparent}
+.brand input#set-date:hover,.brand input#set-date:focus{border-color:var(--line)}
+.actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.setbar{display:flex;gap:16px 24px;align-items:flex-end;flex-wrap:wrap;padding-block:16px}
+.keypick{display:flex;flex-direction:column;gap:6px}
+.keypick .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-muted)}
+.keyrow{display:flex;gap:4px;flex-wrap:wrap}
+.keyrow button{min-height:34px;padding:0 10px;font-weight:700;font-variant-numeric:tabular-nums}
+.setbar label.f{flex:1 1 240px}
+.list{background:var(--bg-raised);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.list-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.list-head h2{font-size:15px;flex:1}
+.list-head button{min-height:34px;padding:0 10px;font-size:14px}
+#items{list-style:none;margin:0;padding:6px;display:flex;flex-direction:column;gap:2px}
+#items li{display:flex;align-items:center;gap:10px;padding:6px 6px 6px 8px;border-radius:10px;background:var(--bg-raised);border:1px solid transparent}
+#items li.song{cursor:pointer;min-height:56px}
+#items li.song:hover{background:var(--bg-sunken)}
+#items li.song.sel{border-color:var(--accent)}
+#items li.section{margin-top:10px;background:transparent;padding-top:10px;border-top:1px solid var(--line);border-radius:0}
+#items li.section:first-child{margin-top:0;border-top:0;padding-top:6px}
+.num{flex:none;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;background:var(--bg-sunken);border:1px solid var(--line);color:var(--fg)}
+li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.ttl{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.ttl .t{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px}
+.ttl .s{font-size:13px;color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ttl .s.warn{color:var(--warn)}
+.secname{flex:1;min-width:0;background:transparent;border-color:transparent;font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.02em;min-height:36px;padding:4px 6px}
+.secname:hover,.secname:focus{border-color:var(--line);background:var(--bg-sunken)}
+.mini{display:flex;gap:2px;flex:none}
+.mini button{min-height:36px;width:36px;padding:0;border-radius:8px;background:transparent;border-color:transparent;color:var(--fg-muted);font-size:17px}
+.mini button:hover{background:var(--bg-sunken);color:var(--fg)}
+.mini button:disabled{opacity:.25}
+.editor{display:flex;flex-direction:column;gap:14px;min-width:0}
+.editor .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.editor .ttl-in{font-family:var(--font-display);font-size:22px;font-weight:700}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips button{min-height:32px;padding:0 10px;font-weight:700;border-radius:8px;color:var(--chord)}
+.hint{font-size:13px;color:var(--fg-muted);line-height:1.5;margin:0}
+.hint code{background:var(--bg-sunken);padding:1px 5px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+#lyrics-in{min-height:280px;font-size:16px;line-height:1.6}
+.ed-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+.ed-foot .sp{flex:1}
+.preview{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg-sunken)}
+
+/* ---------- Lyric rendering (shared by preview and stage) ---------- */
+.lyr{--lsz:28px;font-size:var(--lsz);line-height:1.35;max-width:46em}
+.lyr .ln{white-space:pre-wrap;word-wrap:break-word;margin:0 0 .15em}
+.lyr .ln.has-ch{margin-top:.25em}
+.lyr .seg{display:inline-block;vertical-align:bottom}
+.lyr .ch{display:block;height:1.1em;line-height:1.1;font-weight:700;color:var(--chord);font-size:.92em;letter-spacing:.01em}
+.lyr .tx{white-space:pre-wrap}
+.lyr .lbl{display:inline-block;margin:.8em 0 .2em;font-size:.55em;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:700}
+.lyr .ln.chords-only{color:var(--chord);font-weight:700;margin:.4em 0 .2em}
+.lyr .gap{height:.8em}
+.chordrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chordrow .cc{font-weight:700;color:var(--chord);background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:1.1em;font-variant-numeric:tabular-nums}
+.chordrow .cx{color:var(--fg-muted)}
+
+/* ---------- Stage mode ---------- */
+#stage{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:20;padding-top:env(safe-area-inset-top,0px)}
+.st-bar{display:flex;align-items:center;gap:8px;padding-block:6px;border-bottom:1px solid var(--line);background:var(--bg-raised);flex-wrap:wrap}
+.st-bar button,.st-bar select{min-height:38px}
+.st-bar select{width:auto;padding:4px 8px}
+.st-pos{font-variant-numeric:tabular-nums;font-weight:700}
+.st-tools{display:flex;align-items:center;gap:6px;margin-left:auto;flex-wrap:wrap}
+.scrollctl{display:inline-flex;align-items:center;gap:2px;background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:2px}
+.scrollctl button{border:0;background:transparent;min-height:34px;padding:0 10px}
+.scrollctl button.on{background:var(--accent);color:var(--accent-ink);border-radius:8px}
+.scrollctl .spd{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
+.st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:18px 45vh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.st-head{margin-bottom:16px}
+.st-sec{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-muted)}
+.st-song{font-family:var(--font-display);font-size:clamp(28px,4.5vw,44px);font-weight:700;line-height:1.1;margin:4px 0 8px}
+.st-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--fg-muted);font-size:15px}
+.st-meta .keychip{font-size:16px}
+.st-notes{margin-top:10px;padding:8px 12px;border-left:3px solid var(--accent);color:var(--fg);font-size:16px;background:var(--bg-raised);border-radius:0 8px 8px 0;max-width:46em}
+.st-chords{margin:14px 0 20px}
+.st-empty{color:var(--fg-muted);font-size:20px;padding:30px 0;max-width:30em;line-height:1.5}
+.st-next{margin-top:60px;padding-top:16px;border-top:1px dashed var(--line);color:var(--fg-muted);font-size:16px}
+.st-next b{color:var(--fg)}
+.st-nav{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;font-size:30px;padding:0;opacity:.85;background:var(--bg-raised);z-index:21}
+.st-nav.prev{left:calc(12px + env(safe-area-inset-left,0px))}
+.st-nav.next{right:calc(12px + env(safe-area-inset-right,0px))}
+.st-nav:disabled{opacity:.25}
+
+/* ---------- Overlays (song editor, picker, transfer) ---------- */
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(6px);z-index:30;display:flex;align-items:flex-start;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gutter-r) calc(16px + env(safe-area-inset-bottom,0px)) var(--gutter-l);overflow:auto;overscroll-behavior:contain}
+.sheet{background:var(--bg-raised);border:1px solid var(--line);border-radius:16px;width:min(760px,100%);padding:16px;display:flex;flex-direction:column;gap:12px}
+.sheet h2{font-family:var(--font-display);font-size:20px}
+.sheet .sh-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.sheet .sh-head .nav{display:flex;gap:6px;align-items:center}
+#pick-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+#pick-list li.sec{margin-top:10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-muted);padding:4px 10px}
+#pick-list li.sec:first-child{margin-top:0}
+#pick-list li button{width:100%;justify-content:flex-start;gap:12px;border-color:transparent;background:transparent;min-height:46px;font-size:17px}
+#pick-list li button:hover{background:var(--bg-sunken)}
+#pick-list li button.cur{background:var(--bg-sunken);border-color:var(--accent)}
+#pick-list .n{color:var(--fg-muted);width:2ch;text-align:right;font-variant-numeric:tabular-nums}
+#transfer-text{min-height:200px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:700;z-index:50;transition:opacity .2s;opacity:0;pointer-events:none;max-width:calc(100% - 32px)}
+#toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="page gutter" id="page">
+  <header class="topbar" id="topbar">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"></div>
+      <input id="set-title" aria-label="Setlist name" value="Diwali Night">
+      <input id="set-date" type="date" aria-label="Performance date">
+    </div>
+    <div class="actions">
+      <span class="pill off" id="sync"><span class="dot"></span><span id="sync-text">Local</span></span>
+      <button id="btn-use-shared" hidden>Use shared version</button>
+      <button id="btn-code" hidden>Enter edit code</button>
+      <button id="btn-transfer" class="ghost">Copy / paste data</button>
+      <button id="btn-stage" class="primary">Stage mode ▶</button>
+    </div>
+  </header>
+
+  <div class="setbar">
+    <div class="keypick">
+      <span class="lbl">Set key · every song transposes to this</span>
+      <div class="keyrow" id="set-key"></div>
+    </div>
+    <label class="f"><span>Lineup</span><input id="set-lineup" placeholder="Who is on stage"></label>
+  </div>
+
+  <section class="list">
+    <div class="list-head">
+      <h2>Running order <span class="muted" id="count"></span></h2>
+      <button id="btn-add-song">+ Song</button>
+      <button id="btn-add-sec">+ Section</button>
+    </div>
+    <ol id="items"></ol>
+  </section>
+</div>
+
+<div class="overlay" id="song-dialog" hidden role="dialog" aria-modal="true" aria-label="Edit song">
+  <div class="sheet">
+    <div class="sh-head">
+      <div class="nav"><button id="ed-prev" aria-label="Previous song">‹</button><button id="ed-next" aria-label="Next song">›</button><span class="muted" id="ed-pos"></span></div>
+      <button id="ed-close" class="primary">Done</button>
+    </div>
+    <div class="editor" id="editor"></div>
+  </div>
+</div>
+
+<section id="stage" hidden aria-label="Stage mode">
+  <div class="st-bar gutter">
+    <button id="st-exit">✎ Edit</button>
+    <button id="st-pick" class="st-pos">1 / 1 ▾</button>
+    <div class="st-tools">
+      <button id="st-inline" aria-pressed="false" title="Show chords inline over the words">Inline chords</button>
+      <button id="st-font-dn" aria-label="Smaller text">A−</button>
+      <button id="st-font-up" aria-label="Larger text">A+</button>
+      <select id="st-capo" aria-label="Capo"></select>
+      <div class="scrollctl" role="group" aria-label="Auto-scroll">
+        <button id="st-play" aria-label="Start auto-scroll">▶</button>
+        <button id="st-slow" aria-label="Slower">−</button>
+        <span class="spd" id="st-speed">3</span>
+        <button id="st-fast" aria-label="Faster">+</button>
+      </div>
+      <button id="st-full" aria-label="Full screen">⛶</button>
+    </div>
+  </div>
+  <div class="st-body gutter" id="st-body"></div>
+  <button class="st-nav prev" id="st-prev" aria-label="Previous song">‹</button>
+  <button class="st-nav next" id="st-next" aria-label="Next song">›</button>
+</section>
+
+<div class="overlay" id="picker" hidden>
+  <div class="sheet">
+    <div class="sh-head"><h2>Jump to song</h2><button id="pick-close">Close</button></div>
+    <ol id="pick-list"></ol>
+  </div>
+</div>
+
+<div class="overlay" id="code" hidden role="dialog" aria-modal="true" aria-label="Edit code">
+  <div class="sheet">
+    <div class="sh-head"><h2>Edit code</h2><button id="code-close">Close</button></div>
+    <p class="hint">Saving to the shared setlist needs the band's edit code. Reading never does.</p>
+    <input id="code-in" type="password" autocomplete="off" aria-label="Edit code">
+    <div class="actions"><button id="code-save" class="primary">Save and retry</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="transfer" hidden>
+  <div class="sheet">
+    <div class="sh-head"><h2>Copy / paste setlist data</h2><button id="transfer-close">Close</button></div>
+    <p class="hint">Move the whole setlist between devices without an account: copy it here, paste it on the other iPad (Notes, a message, anything), then paste it into this box there and tap Replace.</p>
+    <textarea id="transfer-text" aria-label="Setlist data" spellcheck="false"></textarea>
+    <div class="actions">
+      <button id="transfer-copy" class="primary">Copy current setlist</button>
+      <button id="transfer-download" hidden>Download JSON</button>
+      <button id="transfer-apply">Replace with pasted text</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+/* ---------- utilities ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
+let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800)}
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#code').hidden)}
+function show(sel,on){$(sel).hidden=!on;lockPage()}
+
+/* ---------- music theory ---------- */
+const NOTE_IDX={C:0,'B#':0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,Fb:4,F:5,'E#':5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11,Cb:11};
+const SHARPS=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const FLATS=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const KEYS=['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const keyIdx=k=>NOTE_IDX[k]??0;
+const prefersFlats=k=>/^(F|Bb|Eb|Ab|Db|Gb|Cb)$/.test(k);
+const keyName=(idx,flats)=>(flats?FLATS:SHARPS)[((idx%12)+12)%12];
+function parseChord(tok){
+  const m=/^([A-G])([#b]?)([^\/]*)(?:\/([A-G])([#b]?))?$/.exec(tok);
+  if(!m)return null;
+  if(!/^(?:m|maj|min|dim|aug|sus|add|M|\+|-|°|ø|º|\d|\(|\)|#|b)*$/.test(m[3]))return null;
+  return{root:m[1]+m[2],suffix:m[3],bass:m[4]?m[4]+m[5]:null};
+}
+function transposeChord(tok,semis,flats){
+  const c=parseChord(tok);if(!c)return tok;
+  let out=keyName(keyIdx(c.root)+semis,flats)+c.suffix;
+  if(c.bass)out+='/'+keyName(keyIdx(c.bass)+semis,flats);
+  return out;
+}
+const diatonic=k=>{const i=keyIdx(k),f=prefersFlats(k);return[keyName(i,f),keyName(i+2,f)+'m',keyName(i+4,f)+'m',keyName(i+5,f),keyName(i+7,f),keyName(i+9,f)+'m',keyName(i+11,f)+'dim']};
+
+/* ---------- lyric parsing ---------- */
+const CH_RE=/\[([^\]]+)\]/g;
+function parseLine(line){
+  const t=line.trim();
+  if(!t)return{type:'empty'};
+  if(/^\{.*\}$/.test(t)||/^#/.test(t))return{type:'label',text:t.replace(/^\{|\}$/g,'').replace(/^#+\s*/,'').trim()};
+  const segs=[];let last=0,m,any=false;CH_RE.lastIndex=0;
+  while((m=CH_RE.exec(line))){
+    const text=line.slice(last,m.index);
+    if(segs.length===0){if(text)segs.push({chord:null,text});}
+    else segs[segs.length-1].text=text;
+    segs.push({chord:m[1],text:''});any=true;last=CH_RE.lastIndex;
+  }
+  if(segs.length)segs[segs.length-1].text=line.slice(last);else segs.push({chord:null,text:line});
+  if(any&&segs.every(s=>!s.text.trim()))return{type:'chords',chords:segs.filter(s=>s.chord).map(s=>s.chord)};
+  return{type:'lyric',segs,hasChord:any};
+}
+function inlineChords(lyrics){const out=[];let m;CH_RE.lastIndex=0;while((m=CH_RE.exec(lyrics||'')))if(!out.includes(m[1]))out.push(m[1]);return out}
+function chordTokens(str){return(str||'').split(/[\s,|]+/).filter(Boolean)}
+
+/* ---------- default content (traditional texts only; film-song lyrics are pasted in by the band) ---------- */
+const TRAD={
+'Kaga Sab Tan Khaiyo':{chords:'C# F# G#',lyrics:
+`{Doha · Baba Farid}
+[C#]Kaaga sab tan khaaiyo, [F#]chun chun khaaiyo [C#]maas
+[C#]Do naina mat khaaiyo, mohe [G#]piya milan ki [C#]aas
+
+{Repeat · add the couplets your version uses}`},
+'Chaap Tilak':{chords:'C# F# G#',lyrics:
+`{Sthayi}
+[C#]Chhaap tilak sab chheeni re mose [G#]naina mila[C#]ike
+[C#]Chhaap tilak sab chheeni re mose [G#]naina mila[C#]ike
+
+{Antara 1}
+[F#]Prem bhati ka madhva pilaike
+[C#]Matwari kar leeni re mose [G#]naina mila[C#]ike
+
+{Antara 2}
+[F#]Gori gori baiyan, hari hari chudiyan
+[C#]Baiyan pakad dhar leeni re mose [G#]naina mila[C#]ike
+
+{Antara 3}
+[F#]Bal bal jaaun main tore rang rajwa
+[C#]Apni si rang deeni re mose [G#]naina mila[C#]ike
+
+{Antara 4}
+[F#]Khusrau Nijaam ke bal bal jaiye
+[C#]Mohe suhaagan keeni re mose [G#]naina mila[C#]ike`},
+'Krishna Nee Begane':{chords:'C# F# G#',lyrics:
+`{Pallavi}
+[C#]Krishna nee begane [G#]baaro
+
+{Anupallavi}
+[F#]Begane baaro mukhavannu [C#]toro
+[C#]Krishna nee begane [G#]baaro
+
+{Charanam 1}
+[C#]Kaalalandige gejje neelada [F#]baavuli
+[C#]Neela varnane naatya[G#]vaaduta [C#]baaro
+
+{Charanam 2}
+[C#]Udiyalli udigejje beralalli [F#]ungura
+[C#]Koralalli haakida vaija[G#]yantimaale
+
+{Charanam 3}
+[C#]Kaashi peetambara kaiyalli [F#]kolalu
+[C#]Pooshisida shrigandha maiyolu [G#]ghamma ghamma
+
+{Charanam 4}
+[C#]Taayige baayalli jagavannu [F#]torida
+[C#]Jagadoddhaaraka namma [G#]Udupi Shri [C#]Krishna`},
+'Govinda Bolo Hari Gopal Bolo':{chords:'C# F# G#',lyrics:
+`{Chorus · repeat, build tempo}
+[C#]Govinda bolo Hari [G#]Gopal bolo
+[F#]Radha Raman Hari [G#]Govinda [C#]bolo
+
+{Verse · add your own lines}`},
+'Shri Krishna Govinda Hare Murare':{chords:'C# F# G#',lyrics:
+`{Chorus · repeat}
+[C#]Shri Krishna Govinda Hare [G#]Murare
+[F#]Hey Nath Narayan [G#]Vasu[C#]deva`},
+'Dumadum Mast Kalandar':{chords:'C# F# G#',lyrics:
+`{Slow · opening}
+[C#]O laal meri pat rakhiyo bala [F#]Jhoole [C#]Laalan
+[C#]Sindhri da Sehwan da, [F#]sakhi Shahbaaz [C#]Qalandar
+
+{Chorus · fast}
+[C#]Dama dam mast Qalandar, [G#]Ali dam dam de [C#]andar
+[C#]Dama dam mast Qalandar, [G#]Ali da pehla [C#]number
+
+{Verse}
+[C#]Chaar charaagh tere baran hamesha
+[F#]Panjwaan main baaran aayi, bala [G#]Jhoole [C#]Laalan
+
+{Verse}
+[C#]Hind Sindh peera teri naubat baaje
+[F#]Naal baje ghadiyaal, bala [G#]Jhoole [C#]Laalan
+
+{Verse}
+[C#]Har dam peera teri khair hove
+[F#]Naam-e-Ali beda paar laga, [G#]Jhoole [C#]Laalan
+
+{Sargam jugalbandi · two singers, others take alaps}`}
+};
+
+/* ---------- state ---------- */
+const S_KEY='diwali-set/state',P_KEY='diwali-set/prefs';
+function song(title,notes){const t=TRAD[title];return{type:'song',id:uid(),title,key:'C#',perform:'',leads:'',chords:t?t.chords:'',lyrics:t?t.lyrics:'',notes:notes||''}}
+function section(name){return{type:'section',id:uid(),name}}
+function defaultState(){return{
+  title:'Diwali Night',date:'2026-11-14',key:'C#',
+  lineup:'2 lead female singers · 2 male singers on guitar · 4 chorus',
+  updatedAt:0,
+  items:[
+    section('Slow / Soulful'),
+    song('Kaga Sab Tan Khaiyo','High note start.'),
+    song('Chaap Tilak'),song('Luka Chupi'),song('Kesariya Tera Ishq Hai Piya'),song('Krishna Nee Begane'),
+    song('Janani Janani','Swarams from Manargal Keten.'),
+    section('Medium Tempo'),
+    song('Illahi'),song('Dooba Dooba'),song('Give Me Some Sunshine'),song('Roobaroo'),
+    section('High Energy'),
+    song('Mental Manadhil'),song('Luka Chup Na Jao Ji'),song('Govinda Bolo Hari Gopal Bolo'),song('Shri Krishna Govinda Hare Murare'),song('Ab Ke Sawan Aise Barse'),
+    section('Finale'),
+    song('Dumadum Mast Kalandar','Slow, then fast. Sargam jugalbandi between two singers; the other two take alaps.')
+  ]}}
+function normalize(raw){
+  const d=defaultState();const s=JSON.parse(JSON.stringify(raw||{}));
+  const out={title:String(s.title??d.title),date:String(s.date??d.date),key:KEYS.includes(s.key)?s.key:'C#',lineup:String(s.lineup??''),updatedAt:Number(s.updatedAt)||0,items:[]};
+  for(const it of Array.isArray(s.items)?s.items:[]){
+    if(!it||typeof it!=='object')continue;
+    if(it.type==='section')out.items.push({type:'section',id:String(it.id||uid()),name:String(it.name||'Section')});
+    else if(it.type==='song')out.items.push({type:'song',id:String(it.id||uid()),title:String(it.title||'Untitled'),key:KEYS.includes(it.key)?it.key:(NOTE_IDX[it.key]!=null?keyName(keyIdx(it.key),false):'C#'),perform:KEYS.includes(it.perform)?it.perform:'',leads:String(it.leads||''),chords:String(it.chords||''),lyrics:String(it.lyrics||''),notes:String(it.notes||'')});
+  }
+  if(!out.items.length)out.items=d.items;
+  return out;
+}
+let state=normalize(ls.get(S_KEY,null)||defaultState());
+const prefs=Object.assign({fontSize:28,capo:0,inline:true,speed:3,lastId:null,editCode:''},ls.get(P_KEY,{}));
+const savePrefs=()=>ls.set(P_KEY,prefs);
+let selId=null;
+const songs=()=>state.items.filter(i=>i.type==='song');
+const sectionOf=id=>{let cur='';for(const it of state.items){if(it.type==='section')cur=it.name;if(it.id===id)return cur}return''};
+const performKey=sg=>sg.perform||state.key;
+const semisFor=sg=>((keyIdx(performKey(sg))-keyIdx(sg.key))%12+12)%12;
+
+/* ---------- persistence + sync (HTTP API + polling) ---------- */
+const API='/api/setlist';
+const sync={on:false,canWrite:true,remote:null,localDirty:false,pushing:false,pending:false,status:'local',needCode:false,noStore:false,offline:false};
+function saveLocal(){ls.set(S_KEY,state)}
+function markChanged(){state.updatedAt=Date.now();saveLocal();if(sync.on&&sync.canWrite)schedulePush();else if(sync.on)sync.localDirty=true;refreshSync();if(!$('#stage').hidden)renderStage(true)}
+const schedulePush=debounce(()=>push(),700);
+function adoptRemote(remote){state=normalize(remote);saveLocal();sync.localDirty=false;renderHeader();renderList();if(!$('#song-dialog').hidden)renderEditor();if(!$('#stage').hidden)renderStage(true)}
+async function push(){
+  if(!sync.on||!sync.canWrite)return;
+  if(sync.pushing){sync.pending=true;return}
+  sync.pushing=true;sync.status='saving';refreshSync();
+  try{
+    const r=await fetch(API,{method:'PUT',headers:{'content-type':'application/json','x-edit-code':prefs.editCode||''},body:JSON.stringify(state),cache:'no-store'});
+    if(r.status===401){sync.canWrite=false;sync.needCode=true;sync.localDirty=true;sync.status='readonly'}
+    else if(r.status===409){const j=await r.json();if(j&&j.data)adoptRemote(j.data);sync.status='synced';toast('Someone saved a newer version — showing that')}
+    else if(r.status===503){sync.noStore=true;sync.status='error'}
+    else if(!r.ok)throw 0;
+    else{sync.status='synced';sync.localDirty=false;sync.offline=false}
+  }catch{sync.offline=true;sync.status='error';sync.pending=true}
+  sync.pushing=false;refreshSync();
+  if(sync.pending&&!sync.offline){sync.pending=false;push()}
+}
+async function pull(){
+  try{
+    const r=await fetch(API,{cache:'no-store'});
+    if(r.status===503){sync.noStore=true;sync.status='error';refreshSync();return}
+    if(!r.ok)throw 0;
+    const j=await r.json();sync.offline=false;sync.noStore=false;
+    if(!j||!j.data){if(sync.canWrite&&state.updatedAt>0)push();else if(sync.canWrite&&songs().some(s=>s.lyrics.trim())){state.updatedAt=Date.now();saveLocal();push()}else{sync.status='synced';refreshSync()}return}
+    const remote=j.data;sync.remote=remote;
+    const rT=Number(remote.updatedAt)||0,lT=state.updatedAt||0;
+    if(rT>lT){adoptRemote(remote);if(sync.status!=='local')toast('Setlist updated')}
+    else if(rT<lT){if(sync.canWrite)schedulePush();else sync.localDirty=true}
+    if(sync.status!=='saving')sync.status='synced';
+    refreshSync();
+  }catch{sync.offline=true;refreshSync()}
+}
+function refreshSync(){
+  const pill=$('#sync'),txt=$('#sync-text'),useBtn=$('#btn-use-shared'),codeBtn=$('#btn-code');
+  pill.className='pill';useBtn.hidden=true;codeBtn.hidden=!sync.needCode;
+  if(!sync.on){pill.classList.add('off');txt.textContent='Saved on this device only';return}
+  if(sync.noStore){pill.classList.add('dirty');txt.textContent='Storage not set up on the server';return}
+  if(sync.offline){pill.classList.add('dirty');txt.textContent='Offline · saved on this device';return}
+  if(!sync.canWrite){pill.classList.add(sync.localDirty?'dirty':'ro');txt.textContent=sync.localDirty?'Local edits (not shared)':'Shared · view only';useBtn.hidden=!sync.localDirty||!sync.remote;return}
+  if(sync.status==='saving'){pill.classList.add('busy');txt.textContent='Saving…';return}
+  if(sync.status==='error'){pill.classList.add('dirty');txt.textContent='Sync problem · saved locally';return}
+  pill.classList.add('ok');txt.textContent='Shared with the band';
+}
+function initSync(){
+  sync.on=true;refreshSync();pull();
+  setInterval(()=>{if(document.visibilityState==='visible')pull()},6000);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pull()});
+  window.addEventListener('online',pull);
+}
+$('#btn-use-shared').addEventListener('click',()=>{if(!sync.remote)return;adoptRemote(sync.remote);refreshSync();toast('Using the shared version')});
+$('#btn-code').addEventListener('click',()=>{$('#code-in').value=prefs.editCode||'';show('#code',true);$('#code-in').focus()});
+$('#code-close').addEventListener('click',()=>show('#code',false));
+$('#code').addEventListener('click',e=>{if(e.target===e.currentTarget)show('#code',false)});
+$('#code-save').addEventListener('click',()=>{prefs.editCode=$('#code-in').value.trim();savePrefs();sync.canWrite=true;sync.needCode=false;show('#code',false);push()});
+
+/* ---------- rendering: lyrics ---------- */
+function renderLyricsHTML(sg,opts){
+  const semis=opts.semis,flats=opts.flats,inline=opts.inline;
+  const T=c=>transposeChord(c,semis,flats);
+  const lines=(sg.lyrics||'').split(/\r?\n/);
+  let html='',blank=0;
+  for(const raw of lines){
+    const p=parseLine(raw);
+    if(p.type==='empty'){blank++;if(blank===1)html+='<div class="gap"></div>';continue}
+    blank=0;
+    if(p.type==='label'){html+=`<div><span class="lbl">${esc(p.text)}</span></div>`;continue}
+    if(p.type==='chords'){if(inline)html+=`<div class="ln chords-only">${p.chords.map(c=>esc(T(c))).join('   ')}</div>`;continue}
+    if(!inline||!p.hasChord){html+=`<div class="ln">${esc(p.segs.map(s=>s.text).join(''))}</div>`;continue}
+    html+='<div class="ln has-ch">'+p.segs.map(s=>`<span class="seg"><span class="ch">${s.chord?esc(T(s.chord)):''}</span><span class="tx">${esc(s.text)||'&nbsp;'}</span></span>`).join('')+'</div>';
+  }
+  return html;
+}
+function chordRowHTML(sg,semis,flats){
+  let toks=chordTokens(sg.chords);
+  if(!toks.length)toks=inlineChords(sg.lyrics);
+  if(!toks.length)return'';
+  return`<div class="chordrow">${toks.map(t=>parseChord(t)?`<span class="cc">${esc(transposeChord(t,semis,flats))}</span>`:`<span class="cx">${esc(t)}</span>`).join('')}</div>`;
+}
+function displayOpts(sg){
+  const semis=semisFor(sg)-prefs.capo;
+  const shapeKey=keyName(keyIdx(performKey(sg))-prefs.capo,prefersFlats(performKey(sg)));
+  return{semis,flats:prefersFlats(shapeKey),shapeKey};
+}
+
+/* ---------- rendering: edit mode ---------- */
+function renderHeader(){
+  $('#set-title').value=state.title;$('#set-date').value=state.date;$('#set-lineup').value=state.lineup;
+  $('#set-key').innerHTML=KEYS.map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===state.key}">${k}</button>`).join('');
+  $('#count').textContent=`· ${songs().length} songs`;
+}
+function renderList(){
+  const ol=$('#items');let n=0;const last=state.items.length-1;
+  ol.innerHTML=state.items.map((it,idx)=>{
+    const nav=`<div class="mini"><button data-act="up" aria-label="Move up"${idx===0?' disabled':''}>↑</button><button data-act="down" aria-label="Move down"${idx===last?' disabled':''}>↓</button>`;
+    if(it.type==='section')return`<li class="section" data-id="${it.id}"><input class="secname" value="${esc(it.name)}" aria-label="Section name">${nav}<button data-act="del" aria-label="Remove section header">×</button></div></li>`;
+    n++;const pk=performKey(it);const hasL=!!it.lyrics.trim();
+    const sub=[it.leads,hasL?'':'no lyrics yet'].filter(Boolean).join(' · ');
+    return`<li class="song${it.id===selId?' sel':''}" data-id="${it.id}"><span class="num">${n}</span><div class="ttl"><span class="t">${esc(it.title)}</span><span class="s${hasL?'':' warn'}">${esc(sub)}</span></div><span class="keychip${it.perform?' on':''}" title="${it.perform?'Own key':'Set key'}">${pk}</span>${nav}</div></li>`;
+  }).join('');
+}
+function openEditor(id){selId=id;renderList();renderEditor();show('#song-dialog',true);$('#song-dialog').scrollTop=0}
+function closeEditor(){show('#song-dialog',false);renderList()}
+function renderEditor(){
+  const ed=$('#editor');const list=songs();const i=list.findIndex(s=>s.id===selId);const sg=list[i];
+  if(!sg){closeEditor();return}
+  $('#ed-pos').textContent=`${i+1} of ${list.length}`;$('#ed-prev').disabled=i===0;$('#ed-next').disabled=i===list.length-1;
+  const dia=diatonic(sg.key);
+  ed.innerHTML=`
+    <label class="f"><span>Song</span><input id="ed-title" class="ttl-in" value="${esc(sg.title)}"></label>
+    <div class="row">
+      <label class="f"><span>Chords below are written in</span><select id="ed-key">${KEYS.map(k=>`<option${k===sg.key?' selected':''}>${k}</option>`).join('')}</select></label>
+      <label class="f"><span>Perform in</span><select id="ed-perform"><option value=""${sg.perform?'':' selected'}>Set key (${state.key})</option>${KEYS.map(k=>`<option value="${k}"${k===sg.perform?' selected':''}>${k}</option>`).join('')}</select></label>
+      <label class="f"><span>Leads / who sings</span><input id="ed-leads" value="${esc(sg.leads)}" placeholder="e.g. Lead 1 + Lead 2, chorus on hook"></label>
+    </div>
+    <label class="f"><span>Stage notes</span><textarea id="ed-notes" rows="2" placeholder="Cues, tempo changes, who takes the alap…">${esc(sg.notes)}</textarea></label>
+    <label class="f"><span>Chords (shown at the top of the song)</span><input id="ed-chords" value="${esc(sg.chords)}" placeholder="e.g. C# G# A#m F#"></label>
+    <div class="chips" id="ed-dia">${dia.map(c=>`<button type="button" data-c="${c}" title="Add ${c}">${c}</button>`).join('')}<span class="hint">← diatonic chords in ${esc(sg.key)}, tap to add</span></div>
+    <label class="f"><span>Lyrics</span><textarea id="lyrics-in" spellcheck="false" placeholder="Paste lyrics here. Optional: [C#]chords in brackets before the syllable, {Verse 1} for labels.">${esc(sg.lyrics)}</textarea></label>
+    <div class="actions"><button id="ed-preview-toggle" aria-pressed="${prefs.inline}">Preview with inline chords</button><span class="hint">Preview in ${esc(performKey(sg))}${prefs.capo?` · capo ${prefs.capo}`:''}</span></div>
+    <div class="preview" id="ed-preview"></div>
+    <div class="ed-foot"><button id="ed-stage">Open on stage ▶</button><button id="ed-dup" class="ghost">Duplicate</button><span class="sp"></span><button id="ed-del" class="ghost danger">Delete song</button></div>`;
+  renderPreview(sg);
+  const upd=(k,v)=>{sg[k]=v;markChanged()};
+  $('#ed-title').addEventListener('input',e=>{upd('title',e.target.value);renderList()});
+  $('#ed-key').addEventListener('change',e=>{upd('key',e.target.value);renderEditor()});
+  $('#ed-perform').addEventListener('change',e=>{upd('perform',e.target.value);renderList();renderEditor()});
+  $('#ed-leads').addEventListener('input',e=>{upd('leads',e.target.value);renderList()});
+  $('#ed-notes').addEventListener('input',e=>upd('notes',e.target.value));
+  $('#ed-chords').addEventListener('input',e=>{upd('chords',e.target.value);renderPreview(sg)});
+  $('#lyrics-in').addEventListener('input',e=>{upd('lyrics',e.target.value);renderPreview(sg);renderList()});
+  $('#ed-dia').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;const inp=$('#ed-chords');inp.value=(inp.value.trim()+' '+b.dataset.c).trim();upd('chords',inp.value);renderPreview(sg)});
+  $('#ed-preview-toggle').addEventListener('click',e=>{prefs.inline=!prefs.inline;savePrefs();e.target.setAttribute('aria-pressed',prefs.inline);renderPreview(sg)});
+  $('#ed-stage').addEventListener('click',()=>{closeEditor();openStage(sg.id)});
+  $('#ed-dup').addEventListener('click',()=>{const i2=state.items.indexOf(sg);const c=JSON.parse(JSON.stringify(sg));c.id=uid();c.title=sg.title+' (copy)';state.items.splice(i2+1,0,c);selId=c.id;markChanged();renderHeader();renderList();renderEditor()});
+  let armed=false;$('#ed-del').addEventListener('click',e=>{if(!armed){armed=true;e.target.textContent='Tap again to delete';e.target.classList.remove('ghost');setTimeout(()=>{armed=false;const b=$('#ed-del');if(b){b.textContent='Delete song';b.classList.add('ghost')}},2500);return}state.items=state.items.filter(x=>x!==sg);selId=null;markChanged();renderHeader();closeEditor();toast('Song deleted')});
+}
+function renderPreview(sg){
+  const o=displayOpts(sg);
+  $('#ed-preview').innerHTML=chordRowHTML(sg,o.semis,o.flats)+`<div class="lyr" style="--lsz:20px;margin-top:12px">${renderLyricsHTML(sg,{semis:o.semis,flats:o.flats,inline:prefs.inline})||'<span class="muted">Lyrics will appear here.</span>'}</div>`;
+}
+$('#ed-close').addEventListener('click',closeEditor);
+$('#ed-prev').addEventListener('click',()=>{const l=songs();const i=l.findIndex(s=>s.id===selId);if(l[i-1]){selId=l[i-1].id;renderList();renderEditor();$('#song-dialog').scrollTop=0}});
+$('#ed-next').addEventListener('click',()=>{const l=songs();const i=l.findIndex(s=>s.id===selId);if(l[i+1]){selId=l[i+1].id;renderList();renderEditor();$('#song-dialog').scrollTop=0}});
+
+/* header + list events */
+$('#set-title').addEventListener('input',e=>{state.title=e.target.value;markChanged()});
+$('#set-date').addEventListener('change',e=>{state.date=e.target.value;markChanged()});
+$('#set-lineup').addEventListener('input',e=>{state.lineup=e.target.value;markChanged()});
+$('#set-key').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;state.key=b.dataset.k;markChanged();renderHeader();renderList();toast(`Set key: ${state.key}`)});
+$('#btn-add-song').addEventListener('click',()=>{const s=song('New song');s.key=state.key;state.items.push(s);markChanged();renderHeader();openEditor(s.id);$('#ed-title')?.select()});
+$('#btn-add-sec').addEventListener('click',()=>{state.items.push(section('New section'));markChanged();renderList();$('#items li:last-child .secname')?.select()});
+const itemsEl=$('#items');
+itemsEl.addEventListener('click',e=>{
+  const li=e.target.closest('li');if(!li)return;
+  const act=e.target.closest('button[data-act]')?.dataset.act;const idx=state.items.findIndex(i=>i.id===li.dataset.id);if(idx<0)return;
+  if(act==='up'&&idx>0){[state.items[idx-1],state.items[idx]]=[state.items[idx],state.items[idx-1]];markChanged();renderList();return}
+  if(act==='down'&&idx<state.items.length-1){[state.items[idx+1],state.items[idx]]=[state.items[idx],state.items[idx+1]];markChanged();renderList();return}
+  if(act==='del'){state.items.splice(idx,1);markChanged();renderList();return}
+  if(e.target.closest('.secname'))return;
+  if(li.classList.contains('song'))openEditor(li.dataset.id);
+});
+itemsEl.addEventListener('input',e=>{const inp=e.target.closest('.secname');if(!inp)return;const it=state.items.find(i=>i.id===inp.closest('li').dataset.id);if(it){it.name=inp.value;markChanged()}});
+
+/* ---------- transfer (copy / paste) ---------- */
+$('#btn-transfer').addEventListener('click',()=>{$('#transfer-text').value=JSON.stringify(state,null,1);show('#transfer',true)});
+$('#transfer-close').addEventListener('click',()=>show('#transfer',false));
+$('#transfer-copy').addEventListener('click',async()=>{
+  const ta=$('#transfer-text');ta.value=JSON.stringify(state,null,1);
+  try{await navigator.clipboard.writeText(ta.value);toast('Copied. Paste it on the other device.')}
+  catch{ta.focus();ta.select();toast('Select all and copy from the box')}
+});
+$('#transfer-download').hidden=false;
+$('#transfer-download').addEventListener('click',()=>{
+  const name=(state.title||'setlist').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-').toLowerCase()||'setlist';
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${name}-${state.date||'setlist'}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+});
+$('#transfer-apply').addEventListener('click',()=>{
+  try{const parsed=JSON.parse($('#transfer-text').value);if(!parsed||!Array.isArray(parsed.items))throw 0;
+    state=normalize(parsed);selId=null;markChanged();renderHeader();renderList();show('#transfer',false);toast('Setlist replaced')}
+  catch{toast('That text is not a setlist export')}
+});
+
+/* ---------- stage mode ---------- */
+const stage=$('#stage'),stBody=$('#st-body');
+let stId=null,wakeLock=null;
+const scroll={on:false,raf:0,last:0,acc:0};
+function openStage(id){
+  stId=id||prefs.lastId||(songs()[0]||{}).id;
+  if(!songs().some(s=>s.id===stId))stId=(songs()[0]||{}).id;
+  show('#stage',true);
+  $('#st-inline').setAttribute('aria-pressed',prefs.inline);$('#st-speed').textContent=prefs.speed;
+  $('#st-capo').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i}"${i===prefs.capo?' selected':''}>${i?`Capo ${i}`:'No capo'}</option>`).join('');
+  renderStage();requestWake();
+}
+function closeStage(){stopScroll();show('#stage',false);releaseWake();if(document.fullscreenElement)document.exitFullscreen?.().catch(()=>{});if(stId){selId=stId;renderList()}}
+function renderStage(keepScroll){
+  const list=songs();let i=list.findIndex(s=>s.id===stId);
+  if(i<0&&list.length){i=0;stId=list[0].id}
+  const sg=list[i];
+  if(!sg){stBody.innerHTML='<div class="st-empty">No songs in the setlist yet. Add some in Edit mode.</div>';return}
+  const keep=keepScroll?stBody.scrollTop:0;
+  prefs.lastId=sg.id;savePrefs();
+  $('#st-pick').textContent=`${i+1} / ${list.length} ▾`;
+  $('#st-prev').disabled=i===0;$('#st-next').disabled=i===list.length-1;
+  const o=displayOpts(sg);const pk=performKey(sg);
+  const capoTxt=prefs.capo?`<span>Capo ${prefs.capo} · ${esc(o.shapeKey)} shapes</span>`:'';
+  const next=list[i+1];
+  const lyr=renderLyricsHTML(sg,{semis:o.semis,flats:o.flats,inline:prefs.inline});
+  stBody.innerHTML=`
+    <div class="st-head">
+      <div class="st-sec">${esc(sectionOf(sg.id)||state.title)}</div>
+      <h1 class="st-song">${esc(sg.title)}</h1>
+      <div class="st-meta"><span class="keychip on">${esc(pk)}</span>${capoTxt}${sg.leads?`<span>${esc(sg.leads)}</span>`:''}</div>
+      ${sg.notes?`<div class="st-notes">${esc(sg.notes)}</div>`:''}
+    </div>
+    <div class="st-chords">${chordRowHTML(sg,o.semis,o.flats)}</div>
+    <div class="lyr" style="--lsz:${prefs.fontSize}px">${lyr||`<div class="st-empty">No lyrics yet for this song. Tap ✎ Edit, open it in the running order and paste the lyrics in.</div>`}</div>
+    <div class="st-next">${next?`Next: <b>${esc(next.title)}</b>${sectionOf(next.id)!==sectionOf(sg.id)?` · ${esc(sectionOf(next.id))}`:''}`:'Last song. Shubh Diwali.'}</div>`;
+  stBody.scrollTop=keep;if(!keepScroll)scroll.acc=0;
+}
+function stepSong(d){const list=songs();const i=list.findIndex(s=>s.id===stId);const n=list[i+d];if(!n)return;stopScroll();stId=n.id;renderStage()}
+$('#btn-stage').addEventListener('click',()=>openStage(selId));
+$('#st-exit').addEventListener('click',closeStage);
+$('#st-prev').addEventListener('click',()=>stepSong(-1));
+$('#st-next').addEventListener('click',()=>stepSong(1));
+$('#st-inline').addEventListener('click',e=>{prefs.inline=!prefs.inline;savePrefs();e.currentTarget.setAttribute('aria-pressed',prefs.inline);renderStage(true)});
+$('#st-font-dn').addEventListener('click',()=>{prefs.fontSize=Math.max(18,prefs.fontSize-2);savePrefs();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
+$('#st-font-up').addEventListener('click',()=>{prefs.fontSize=Math.min(48,prefs.fontSize+2);savePrefs();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
+$('#st-capo').addEventListener('change',e=>{prefs.capo=Number(e.target.value)||0;savePrefs();renderStage(true);toast(prefs.capo?`Capo ${prefs.capo}: chords shown as shapes`:'No capo: chords as they sound')});
+$('#st-full').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen?.().catch(()=>{});else stage.requestFullscreen?.().catch(()=>toast('Full screen is not available here'))});
+/* auto-scroll */
+const pxPerSec=()=>prefs.speed*prefs.speed*2+10; /* 1→12, 3→28, 5→60, 10→210 px/s */
+function tick(ts){
+  if(!scroll.on)return;
+  const dt=Math.min(0.1,(ts-scroll.last)/1000);scroll.last=ts;
+  scroll.acc+=pxPerSec()*dt;const whole=Math.floor(scroll.acc);
+  if(whole){stBody.scrollTop+=whole;scroll.acc-=whole}
+  if(stBody.scrollTop+stBody.clientHeight>=stBody.scrollHeight-1){stopScroll();return}
+  scroll.raf=requestAnimationFrame(tick);
+}
+function startScroll(){if(scroll.on)return;scroll.on=true;scroll.last=performance.now();scroll.acc=0;$('#st-play').textContent='❚❚';$('#st-play').classList.add('on');$('#st-play').setAttribute('aria-label','Pause auto-scroll');scroll.raf=requestAnimationFrame(tick)}
+function stopScroll(){scroll.on=false;cancelAnimationFrame(scroll.raf);$('#st-play').textContent='▶';$('#st-play').classList.remove('on');$('#st-play').setAttribute('aria-label','Start auto-scroll')}
+$('#st-play').addEventListener('click',()=>scroll.on?stopScroll():startScroll());
+$('#st-slow').addEventListener('click',()=>{prefs.speed=Math.max(1,prefs.speed-1);savePrefs();$('#st-speed').textContent=prefs.speed});
+$('#st-fast').addEventListener('click',()=>{prefs.speed=Math.min(10,prefs.speed+1);savePrefs();$('#st-speed').textContent=prefs.speed});
+stBody.addEventListener('click',e=>{if(e.target.closest('a,button'))return;if(scroll.on)stopScroll();});
+/* swipe between songs */
+let tx=0,ty=0;
+stBody.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY},{passive:true});
+stBody.addEventListener('touchend',e=>{const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;if(Math.abs(dx)>70&&Math.abs(dy)<50)stepSong(dx<0?1:-1)},{passive:true});
+/* keyboard */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(!$('#picker').hidden)show('#picker',false);else if(!$('#transfer').hidden)show('#transfer',false);else if(!$('#song-dialog').hidden)closeEditor();else if(!stage.hidden)closeStage();return}
+  if(stage.hidden)return;if(e.target.matches('input,textarea,select'))return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();stepSong(1)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();stepSong(-1)}
+  else if(e.key===' '){e.preventDefault();scroll.on?stopScroll():startScroll()}
+});
+/* wake lock */
+async function requestWake(){try{if('wakeLock'in navigator&&!wakeLock){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}}catch{wakeLock=null}}
+function releaseWake(){try{wakeLock?.release()}catch{}wakeLock=null}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!stage.hidden)requestWake()});
+/* song picker */
+$('#st-pick').addEventListener('click',()=>{
+  let n=0;$('#pick-list').innerHTML=state.items.map(it=>it.type==='section'?`<li class="sec">${esc(it.name)}</li>`:`<li><button type="button" data-id="${it.id}" class="${it.id===stId?'cur':''}"><span class="n">${++n}</span><span>${esc(it.title)}</span><span class="keychip" style="margin-left:auto">${esc(performKey(it))}</span></button></li>`).join('');
+  show('#picker',true);
+});
+$('#pick-close').addEventListener('click',()=>show('#picker',false));
+$('#pick-list').addEventListener('click',e=>{const b=e.target.closest('button[data-id]');if(!b)return;stopScroll();stId=b.dataset.id;show('#picker',false);renderStage()});
+for(const ov of['#picker','#transfer'])$(ov).addEventListener('click',e=>{if(e.target===e.currentTarget)show(ov,false)});
+$('#song-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEditor()});
+
+/* ---------- boot ---------- */
+renderHeader();renderList();refreshSync();
+initSync();
+})();
+</script>
+</body>
+</html>
