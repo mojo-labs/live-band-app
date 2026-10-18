@@ -129,21 +129,22 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 
 /* ---------- Stage mode ---------- */
 #stage{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:20;padding-top:env(safe-area-inset-top,0px)}
-.st-bar{display:flex;align-items:center;gap:8px;padding-block:6px;border-bottom:1px solid var(--line);background:var(--bg);flex-wrap:wrap}
-.st-bar button,.st-bar select{min-height:38px}
-.st-bar select{width:auto;padding:4px 8px}
-.st-pos{font-variant-numeric:tabular-nums;font-weight:700}
+.st-bar{display:flex;align-items:center;gap:8px;padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--bg);flex-wrap:nowrap}
+.st-bar button{min-height:48px}
+.st-pos{font-variant-numeric:tabular-nums;font-weight:700;min-width:5.5ch}
 .st-bar .sp{flex:1}
 .st-bar .ghost{border-color:transparent;min-width:44px}
 .st-bar .ghost.on{background:var(--accent);color:var(--accent-ink)}
-.st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:28px 55vh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.st-bar .nav{min-width:64px;font-size:26px;font-weight:700;background:var(--bg-sunken);border-color:var(--line)}
+.st-bar .nav:disabled{opacity:.3}
+.st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:28px 48px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .st-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
 .st-song{font-family:var(--font-display);font-size:clamp(26px,3.6vw,38px);font-weight:700;line-height:1.15;margin:0}
 .st-head .keychip{font-size:15px}
 .st-head .capo{color:var(--fg-muted);font-size:15px}
 .st-chords{margin:0 0 26px;font-weight:700;color:var(--chord);font-size:1.15em;letter-spacing:.02em;word-spacing:.6em}
 .st-empty{color:var(--fg-muted);font-size:20px;padding:30px 0;max-width:30em;line-height:1.5}
-.st-next{margin-top:72px;color:var(--fg-muted);font-size:15px}
+.st-next{margin-top:40px;color:var(--fg-muted);font-size:15px}
 .setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
 .setrow:first-of-type{border-top:0}
 .setrow select{width:auto}
@@ -180,6 +181,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
     <div class="actions">
       <span class="pill off" id="sync"><span class="dot"></span><span id="sync-text">Local</span></span>
       <button id="btn-use-shared" hidden>Use shared version</button>
+      <button id="btn-theme" class="ghost" aria-label="Switch light or dark">Dark</button>
       <button id="btn-transfer" class="ghost">Copy / paste data</button>
       <button id="btn-stage" class="primary">Stage mode ▶</button>
     </div>
@@ -190,7 +192,6 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
       <span class="lbl">Set key · every song transposes to this</span>
       <div class="keyrow" id="set-key"></div>
     </div>
-    <label class="f"><span>Lineup</span><input id="set-lineup" placeholder="Who is on stage"></label>
   </div>
 
   <section class="list">
@@ -206,24 +207,25 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 <div class="overlay" id="song-dialog" hidden role="dialog" aria-modal="true" aria-label="Edit song">
   <div class="sheet">
     <div class="sh-head">
-      <div class="nav"><button id="ed-prev" aria-label="Previous song">‹</button><button id="ed-next" aria-label="Next song">›</button><span class="muted" id="ed-pos"></span></div>
-      <button id="ed-close" class="primary">Done</button>
+      <div class="nav"><button id="ed-cancel" class="ghost">Cancel</button><button id="ed-stage">Stage ▶</button></div>
+      <div class="nav"><button id="ed-prev" aria-label="Previous song">‹</button><button id="ed-next" aria-label="Next song">›</button><button id="ed-save" class="primary">Save &amp; publish</button></div>
     </div>
     <div class="editor" id="editor"></div>
   </div>
 </div>
 
 <section id="stage" hidden aria-label="Stage mode">
+  <div class="st-body gutter" id="st-body"></div>
   <div class="st-bar gutter">
     <button id="st-exit" class="ghost">Edit</button>
-    <button id="st-prev" class="ghost" aria-label="Previous song">‹</button>
     <button id="st-pick" class="st-pos ghost">1 / 1</button>
-    <button id="st-next" class="ghost" aria-label="Next song">›</button>
+    <span class="sp"></span>
+    <button id="st-prev" class="nav" aria-label="Previous song">‹</button>
+    <button id="st-next" class="nav" aria-label="Next song">›</button>
     <span class="sp"></span>
     <button id="st-play" class="ghost" aria-label="Start auto-scroll">▶</button>
     <button id="st-more" class="ghost" aria-label="Display settings">Aa</button>
   </div>
-  <div class="st-body gutter" id="st-body"></div>
 </section>
 
 <div class="overlay" id="stset" hidden role="dialog" aria-modal="true" aria-label="Display settings">
@@ -233,6 +235,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
     <div class="setrow"><span>Chords over the words</span><button id="st-inline" aria-pressed="false">Off</button></div>
     <div class="setrow"><span>Capo</span><select id="st-capo" aria-label="Capo"></select></div>
     <div class="setrow"><span>Auto-scroll speed</span><div class="stepper"><button id="st-slow" aria-label="Slower">−</button><span id="st-speed">3</span><button id="st-fast" aria-label="Faster">+</button></div></div>
+    <div class="setrow"><span>Appearance</span><button id="st-theme">Dark</button></div>
     <div class="setrow"><span>Full screen</span><button id="st-full">Toggle</button></div>
   </div>
 </div>
@@ -429,10 +432,16 @@ const PLACEHOLDER_RE=/^\s*\{(?:Repeat · add the couplets your version uses|Vers
 function stripPlaceholders(st){let changed=false;for(const it of st.items){if(it.type!=='song')continue;const lines=it.lyrics.split('\n');const kept=lines.filter(l=>!PLACEHOLDER_RE.test(l));if(kept.length!==lines.length){it.lyrics=kept.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n+$/,'');changed=true}}return changed}
 const prefs=Object.assign({fontSize:32,capo:0,inline:true,speed:3,lastId:null},ls.get(P_KEY,{}));
 const savePrefs=()=>ls.set(P_KEY,prefs);
+function applyTheme(){const t=prefs.theme;if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme');
+  const dark=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  for(const id of['#btn-theme','#st-theme']){const b=$(id);if(b)b.textContent=dark?'Light':'Dark'}}
+function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);prefs.theme=dark?'light':'dark';savePrefs();applyTheme()}
+$('#btn-theme').addEventListener('click',toggleTheme);$('#st-theme').addEventListener('click',toggleTheme);
+applyTheme();
 let selId=null;
 const songs=()=>state.items.filter(i=>i.type==='song');
 const sectionOf=id=>{let cur='';for(const it of state.items){if(it.type==='section')cur=it.name;if(it.id===id)return cur}return''};
-const performKey=sg=>sg.perform||state.key;
+const performKey=sg=>state.key;
 const semisFor=sg=>((keyIdx(performKey(sg))-keyIdx(sg.key))%12+12)%12;
 
 /* ---------- persistence + sync (HTTP API + polling) ---------- */
@@ -441,7 +450,7 @@ const sync={on:false,canWrite:true,remote:null,localDirty:false,pushing:false,pe
 function saveLocal(){ls.set(S_KEY,state)}
 function markChanged(){state.updatedAt=Date.now();saveLocal();if(sync.on&&sync.canWrite)schedulePush();else if(sync.on)sync.localDirty=true;refreshSync();if(!$('#stage').hidden)renderStage(true)}
 const schedulePush=debounce(()=>push(),700);
-function adoptRemote(remote){state=normalize(remote);if(stripPlaceholders(state)&&sync.canWrite){state.updatedAt=Date.now();schedulePush()}saveLocal();sync.localDirty=false;renderHeader();renderList();if(!$('#song-dialog').hidden)renderEditor();if(!$('#stage').hidden)renderStage(true)}
+function adoptRemote(remote){state=normalize(remote);if(stripPlaceholders(state)&&sync.canWrite){state.updatedAt=Date.now();schedulePush()}saveLocal();sync.localDirty=false;renderHeader();renderList();if(!$('#song-dialog').hidden&&draft){const cur=songs().find(x=>x.id===draft.id);if(!cur){closeEditor();toast('That song was removed on another device')}}if(!$('#stage').hidden)renderStage(true)}
 async function push(){
   if(!sync.on||!sync.canWrite)return;
   if(sync.pushing){sync.pending=true;return}
@@ -522,7 +531,7 @@ function displayOpts(sg){
 
 /* ---------- rendering: edit mode ---------- */
 function renderHeader(){
-  $('#set-title').value=state.title;$('#set-date').value=state.date;$('#set-lineup').value=state.lineup;
+  $('#set-title').value=state.title;$('#set-date').value=state.date;
   $('#set-key').innerHTML=KEYS.map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===state.key}">${k}</button>`).join('');
   $('#count').textContent=`· ${songs().length} songs`;
 }
@@ -536,56 +545,71 @@ function renderList(){
     return`<li class="song${it.id===selId?' sel':''}" data-id="${it.id}"><span class="num">${n}</span><div class="ttl"><span class="t">${esc(it.title)}</span><span class="s${hasL?'':' warn'}">${esc(sub)}</span></div><span class="keychip${it.perform?' on':''}" title="${it.perform?'Own key':'Set key'}">${pk}</span>${nav}</div></li>`;
   }).join('');
 }
-function openEditor(id){selId=id;renderList();renderEditor();show('#song-dialog',true);$('#song-dialog').scrollTop=0}
-function closeEditor(){show('#song-dialog',false);renderList()}
+let draft=null,saveArmed=false,saveTimer=0;
+function openEditor(id){selId=id;const sg=songs().find(x=>x.id===id);if(!sg)return;draft=JSON.parse(JSON.stringify(sg));renderList();renderEditor();show('#song-dialog',true);$('#song-dialog').scrollTop=0}
+function closeEditor(){draft=null;disarmSave();show('#song-dialog',false);renderList()}
+function disarmSave(){saveArmed=false;clearTimeout(saveTimer);const b=$('#ed-save');if(b)b.textContent='Save & publish'}
+function commitDraft(){
+  const i=state.items.findIndex(x=>x.id===draft.id);
+  if(i<0)return;
+  state.items[i]=JSON.parse(JSON.stringify(draft));
+  markChanged();renderHeader();renderList();
+}
+function switchSong(d){
+  const l=songs();const i=l.findIndex(x=>x.id===selId);const n=l[i+d];if(!n)return;
+  if(draft&&JSON.stringify(draft)!==JSON.stringify(l[i])){toast('Save or cancel first');return}
+  selId=n.id;draft=JSON.parse(JSON.stringify(n));disarmSave();renderList();renderEditor();$('#song-dialog').scrollTop=0;
+}
 function renderEditor(){
-  const ed=$('#editor');const list=songs();const i=list.findIndex(s=>s.id===selId);const sg=list[i];
-  if(!sg){closeEditor();return}
-  $('#ed-pos').textContent=`${i+1} of ${list.length}`;$('#ed-prev').disabled=i===0;$('#ed-next').disabled=i===list.length-1;
+  const ed=$('#editor');const list=songs();const i=list.findIndex(x=>x.id===selId);const sg=draft;
+  if(!sg||i<0){closeEditor();return}
+  $('#ed-prev').disabled=i===0;$('#ed-next').disabled=i===list.length-1;
   const dia=diatonic(sg.key);
   ed.innerHTML=`
     <label class="f"><span>Song</span><input id="ed-title" class="ttl-in" value="${esc(sg.title)}"></label>
     <div class="row">
-      <label class="f"><span>Chords below are written in</span><select id="ed-key">${KEYS.map(k=>`<option${k===sg.key?' selected':''}>${k}</option>`).join('')}</select></label>
-      <label class="f"><span>Perform in</span><select id="ed-perform"><option value=""${sg.perform?'':' selected'}>Set key (${state.key})</option>${KEYS.map(k=>`<option value="${k}"${k===sg.perform?' selected':''}>${k}</option>`).join('')}</select></label>
-      <label class="f"><span>Leads / who sings</span><input id="ed-leads" value="${esc(sg.leads)}" placeholder="e.g. Lead 1 + Lead 2, chorus on hook"></label>
+      <label class="f"><span>Key</span><select id="ed-key">${KEYS.map(k=>`<option${k===sg.key?' selected':''}>${k}</option>`).join('')}</select></label>
+      <label class="f"><span>Leads</span><input id="ed-leads" value="${esc(sg.leads)}"></label>
     </div>
-    <label class="f"><span>Stage notes</span><textarea id="ed-notes" rows="2" placeholder="Cues, tempo changes, who takes the alap…">${esc(sg.notes)}</textarea></label>
-    <label class="f"><span>Chords (shown at the top of the song)</span><input id="ed-chords" value="${esc(sg.chords)}" placeholder="e.g. C# G# A#m F#"></label>
-    <div class="chips" id="ed-dia">${dia.map(c=>`<button type="button" data-c="${c}" title="Add ${c}">${c}</button>`).join('')}<span class="hint">← diatonic chords in ${esc(sg.key)}, tap to add</span></div>
-    <label class="f"><span>Lyrics</span><textarea id="lyrics-in" spellcheck="false" placeholder="Paste lyrics here. Optional: [C#]chords in brackets before the syllable, {Verse 1} for labels.">${esc(sg.lyrics)}</textarea></label>
-    <div class="actions"><button id="ed-preview-toggle" aria-pressed="${prefs.inline}">Preview with inline chords</button><span class="hint">Preview in ${esc(performKey(sg))}${prefs.capo?` · capo ${prefs.capo}`:''}</span></div>
+    <label class="f"><span>Notes</span><textarea id="ed-notes" rows="2">${esc(sg.notes)}</textarea></label>
+    <label class="f"><span>Chords</span><input id="ed-chords" value="${esc(sg.chords)}" placeholder="C# G# A#m F#"></label>
+    <div class="chips" id="ed-dia">${dia.map(c=>`<button type="button" data-c="${c}">${c}</button>`).join('')}</div>
+    <label class="f"><span>Lyrics</span><textarea id="lyrics-in" spellcheck="false">${esc(sg.lyrics)}</textarea></label>
+    <div class="actions"><button id="ed-preview-toggle" aria-pressed="${prefs.inline}">Preview with inline chords</button></div>
     <div class="preview" id="ed-preview"></div>
-    <div class="ed-foot"><button id="ed-stage">Open on stage ▶</button><button id="ed-dup" class="ghost">Duplicate</button><span class="sp"></span><button id="ed-del" class="ghost danger">Delete song</button></div>`;
+    <div class="ed-foot"><button id="ed-dup" class="ghost">Duplicate</button><span class="sp"></span><button id="ed-del" class="ghost danger">Delete song</button></div>`;
   renderPreview(sg);
-  const upd=(k,v)=>{sg[k]=v;markChanged()};
-  $('#ed-title').addEventListener('input',e=>{upd('title',e.target.value);renderList()});
+  const upd=(k,v)=>{sg[k]=v;disarmSave()};
+  $('#ed-title').addEventListener('input',e=>upd('title',e.target.value));
   $('#ed-key').addEventListener('change',e=>{upd('key',e.target.value);renderEditor()});
-  $('#ed-perform').addEventListener('change',e=>{upd('perform',e.target.value);renderList();renderEditor()});
-  $('#ed-leads').addEventListener('input',e=>{upd('leads',e.target.value);renderList()});
+  $('#ed-leads').addEventListener('input',e=>upd('leads',e.target.value));
   $('#ed-notes').addEventListener('input',e=>upd('notes',e.target.value));
   $('#ed-chords').addEventListener('input',e=>{upd('chords',e.target.value);renderPreview(sg)});
-  $('#lyrics-in').addEventListener('input',e=>{upd('lyrics',e.target.value);renderPreview(sg);renderList()});
+  $('#lyrics-in').addEventListener('input',e=>{upd('lyrics',e.target.value);renderPreview(sg)});
   $('#ed-dia').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;const inp=$('#ed-chords');inp.value=(inp.value.trim()+' '+b.dataset.c).trim();upd('chords',inp.value);renderPreview(sg)});
   $('#ed-preview-toggle').addEventListener('click',e=>{prefs.inline=!prefs.inline;savePrefs();e.target.setAttribute('aria-pressed',prefs.inline);renderPreview(sg)});
-  $('#ed-stage').addEventListener('click',()=>{closeEditor();openStage(sg.id)});
-  $('#ed-dup').addEventListener('click',()=>{const i2=state.items.indexOf(sg);const c=JSON.parse(JSON.stringify(sg));c.id=uid();c.title=sg.title+' (copy)';state.items.splice(i2+1,0,c);selId=c.id;markChanged();renderHeader();renderList();renderEditor()});
-  let armed=false;$('#ed-del').addEventListener('click',e=>{if(!armed){armed=true;e.target.textContent='Tap again to delete';e.target.classList.remove('ghost');setTimeout(()=>{armed=false;const b=$('#ed-del');if(b){b.textContent='Delete song';b.classList.add('ghost')}},2500);return}state.items=state.items.filter(x=>x!==sg);selId=null;markChanged();renderHeader();closeEditor();toast('Song deleted')});
+  $('#ed-dup').addEventListener('click',()=>{const i2=state.items.findIndex(x=>x.id===sg.id);const c=JSON.parse(JSON.stringify(sg));c.id=uid();c.title=sg.title+' (copy)';state.items.splice(i2+1,0,c);markChanged();renderHeader();selId=c.id;draft=JSON.parse(JSON.stringify(c));renderList();renderEditor();toast('Duplicated')});
+  let armed=false;$('#ed-del').addEventListener('click',e=>{if(!armed){armed=true;e.target.textContent='Tap again to delete';e.target.classList.remove('ghost');setTimeout(()=>{armed=false;const b=$('#ed-del');if(b){b.textContent='Delete song';b.classList.add('ghost')}},2500);return}state.items=state.items.filter(x=>x.id!==sg.id);selId=null;markChanged();renderHeader();closeEditor();toast('Song deleted')});
 }
 function renderPreview(sg){
   const o=displayOpts(sg);
   $('#ed-preview').innerHTML=chordRowHTML(sg,o.semis,o.flats)+`<div class="lyr" style="--lsz:20px;margin-top:12px">${renderLyricsHTML(sg,{semis:o.semis,flats:o.flats,inline:prefs.inline})||'<span class="muted">Lyrics will appear here.</span>'}</div>`;
 }
-$('#ed-close').addEventListener('click',closeEditor);
-$('#ed-prev').addEventListener('click',()=>{const l=songs();const i=l.findIndex(s=>s.id===selId);if(l[i-1]){selId=l[i-1].id;renderList();renderEditor();$('#song-dialog').scrollTop=0}});
-$('#ed-next').addEventListener('click',()=>{const l=songs();const i=l.findIndex(s=>s.id===selId);if(l[i+1]){selId=l[i+1].id;renderList();renderEditor();$('#song-dialog').scrollTop=0}});
+$('#ed-cancel').addEventListener('click',closeEditor);
+$('#ed-save').addEventListener('click',e=>{
+  if(!draft)return;
+  if(!saveArmed){saveArmed=true;e.currentTarget.textContent='Tap again to publish';saveTimer=setTimeout(disarmSave,3000);return}
+  commitDraft();closeEditor();toast('Published to the band');
+});
+$('#ed-stage').addEventListener('click',()=>{const id=selId;closeEditor();openStage(id)});
+$('#ed-prev').addEventListener('click',()=>switchSong(-1));
+$('#ed-next').addEventListener('click',()=>switchSong(1));
 
 /* header + list events */
 $('#set-title').addEventListener('input',e=>{state.title=e.target.value;markChanged()});
 $('#set-date').addEventListener('change',e=>{state.date=e.target.value;markChanged()});
-$('#set-lineup').addEventListener('input',e=>{state.lineup=e.target.value;markChanged()});
 $('#set-key').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;state.key=b.dataset.k;markChanged();renderHeader();renderList();toast(`Set key: ${state.key}`)});
-$('#btn-add-song').addEventListener('click',()=>{const s=song('New song');s.key=state.key;state.items.push(s);markChanged();renderHeader();openEditor(s.id);$('#ed-title')?.select()});
+$('#btn-add-song').addEventListener('click',()=>{const s=song('New song');s.key=state.key;state.items.push(s);markChanged();renderHeader();renderList();openEditor(s.id);$('#ed-title')?.select()});
 $('#btn-add-sec').addEventListener('click',()=>{state.items.push(section('New section'));markChanged();renderList();$('#items li:last-child .secname')?.select()});
 const itemsEl=$('#items');
 itemsEl.addEventListener('click',e=>{
@@ -649,7 +673,7 @@ function renderStage(keepScroll){
     <div class="st-head"><h1 class="st-song">${esc(sg.title)}</h1><span class="keychip">${esc(pk)}</span>${capoTxt}</div>
     ${chords?`<div class="st-chords">${chords}</div>`:''}
     <div class="lyr" style="--lsz:${prefs.fontSize}px">${lyr||`<div class="st-empty">No lyrics yet. Tap Edit and paste them in.</div>`}</div>
-    <div class="st-next">${next?`Next · ${esc(next.title)}`:'Last song'}</div>`;
+    <div class="st-next">${next?`Next · ${esc(next.title)}`:''}</div>`;
   stBody.scrollTop=keep;if(!keepScroll)scroll.acc=0;
 }
 function stepSong(d){const list=songs();const i=list.findIndex(s=>s.id===stId);const n=list[i+d];if(!n)return;stopScroll();stId=n.id;renderStage()}
@@ -677,7 +701,7 @@ function tick(ts){
   const dt=Math.min(0.1,(ts-scroll.last)/1000);scroll.last=ts;
   scroll.acc+=pxPerSec()*dt;const whole=Math.floor(scroll.acc);
   if(whole){stBody.scrollTop+=whole;scroll.acc-=whole}
-  if(stBody.scrollTop+stBody.clientHeight>=stBody.scrollHeight-1){stopScroll();return}
+  if(Math.ceil(stBody.scrollTop+stBody.clientHeight)>=stBody.scrollHeight-1){stopScroll();return}
   scroll.raf=requestAnimationFrame(tick);
 }
 function startScroll(){if(scroll.on)return;scroll.on=true;scroll.last=performance.now();scroll.acc=0;$('#st-play').textContent='❚❚';$('#st-play').classList.add('on');$('#st-play').setAttribute('aria-label','Pause auto-scroll');scroll.raf=requestAnimationFrame(tick)}
