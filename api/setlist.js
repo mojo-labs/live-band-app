@@ -1,7 +1,7 @@
 // One shared document: the whole setlist as JSON, stored in Redis (Upstash via Vercel Marketplace).
 // GET  /api/setlist           -> { data: <setlist> | null }
-// PUT  /api/setlist           -> body: <setlist>; header x-edit-code when EDIT_CODE is set.
-//                                200 saved · 401 bad code · 409 a newer version exists (returns it) · 503 storage not set up
+// PUT  /api/setlist           -> body: <setlist>. Anyone with the URL can save.
+//                                200 saved · 409 a newer version exists (returns it) · 503 storage not set up
 const KEY = 'diwali-setlist:main';
 
 function store() {
@@ -44,9 +44,6 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'PUT' || req.method === 'POST') {
-      const code = process.env.EDIT_CODE;
-      if (code && (req.headers['x-edit-code'] || '') !== code) return res.status(401).end(JSON.stringify({ error: 'Edit code required.' }));
-
       let body = await readBody(req);
       if (typeof body === 'string') body = JSON.parse(body || 'null');
       if (!body || typeof body !== 'object' || !Array.isArray(body.items)) return res.status(400).end(JSON.stringify({ error: 'Not a setlist.' }));
