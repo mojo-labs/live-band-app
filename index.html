@@ -112,15 +112,15 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 .preview{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--bg-sunken)}
 
 /* ---------- Lyric rendering (shared by preview and stage) ---------- */
-.lyr{--lsz:28px;font-size:var(--lsz);line-height:1.35;max-width:46em}
+.lyr{--lsz:32px;font-size:var(--lsz);line-height:1.5;max-width:30em}
 .lyr .ln{white-space:pre-wrap;word-wrap:break-word;margin:0 0 .15em}
 .lyr .ln.has-ch{margin-top:.25em}
 .lyr .seg{display:inline-block;vertical-align:bottom}
 .lyr .ch{display:block;height:1.1em;line-height:1.1;font-weight:700;color:var(--chord);font-size:.92em;letter-spacing:.01em}
 .lyr .tx{white-space:pre-wrap}
-.lyr .lbl{display:inline-block;margin:.8em 0 .2em;font-size:.55em;letter-spacing:.12em;text-transform:uppercase;color:var(--label);font-weight:700}
+.lyr .lbl{display:inline-block;margin:1em 0 .1em;font-size:.5em;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-muted);font-weight:700}
 .lyr .ln.chords-only{color:var(--chord);font-weight:700;margin:.4em 0 .2em}
-.lyr .gap{height:.8em}
+.lyr .gap{height:1.1em}
 .chordrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .chordrow .cc{font-weight:700;color:var(--chord);background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:4px 12px;font-size:1.1em;font-variant-numeric:tabular-nums}
 .chordrow .cx{color:var(--fg-muted)}
@@ -131,26 +131,23 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 .st-bar button,.st-bar select{min-height:38px}
 .st-bar select{width:auto;padding:4px 8px}
 .st-pos{font-variant-numeric:tabular-nums;font-weight:700}
-.st-tools{display:flex;align-items:center;gap:6px;margin-left:auto;flex-wrap:wrap}
-.scrollctl{display:inline-flex;align-items:center;gap:2px;background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:2px}
-.scrollctl button{border:0;background:transparent;min-height:34px;padding:0 10px}
-.scrollctl button.on{background:var(--accent);color:var(--accent-ink);border-radius:8px}
-.scrollctl .spd{min-width:2ch;text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
-.st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:18px 45vh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.st-head{margin-bottom:16px}
-.st-sec{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-muted)}
-.st-song{font-family:var(--font-display);font-size:clamp(28px,4.5vw,44px);font-weight:700;line-height:1.1;margin:4px 0 8px}
-.st-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--fg-muted);font-size:15px}
-.st-meta .keychip{font-size:16px}
-.st-notes{margin-top:10px;padding:8px 12px;border-left:3px solid var(--accent);color:var(--fg);font-size:16px;background:var(--bg-raised);border-radius:0 8px 8px 0;max-width:46em}
-.st-chords{margin:14px 0 20px}
+.st-bar .sp{flex:1}
+.st-bar .ghost{border-color:transparent;min-width:44px}
+.st-bar .ghost.on{background:var(--accent);color:var(--accent-ink)}
+.st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:28px 55vh;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.st-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.st-song{font-family:var(--font-display);font-size:clamp(26px,3.6vw,38px);font-weight:700;line-height:1.15;margin:0}
+.st-head .keychip{font-size:15px}
+.st-head .capo{color:var(--fg-muted);font-size:15px}
+.st-chords{margin:0 0 26px;font-weight:700;color:var(--chord);font-size:1.15em;letter-spacing:.02em;word-spacing:.6em}
 .st-empty{color:var(--fg-muted);font-size:20px;padding:30px 0;max-width:30em;line-height:1.5}
-.st-next{margin-top:60px;padding-top:16px;border-top:1px dashed var(--line);color:var(--fg-muted);font-size:16px}
-.st-next b{color:var(--fg)}
-.st-nav{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;font-size:30px;padding:0;opacity:.85;background:var(--bg-raised);z-index:21}
-.st-nav.prev{left:calc(12px + env(safe-area-inset-left,0px))}
-.st-nav.next{right:calc(12px + env(safe-area-inset-right,0px))}
-.st-nav:disabled{opacity:.25}
+.st-next{margin-top:72px;color:var(--fg-muted);font-size:15px}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.setrow:first-of-type{border-top:0}
+.setrow select{width:auto}
+.stepper{display:inline-flex;align-items:center;gap:2px;background:var(--bg-sunken);border:1px solid var(--line);border-radius:10px;padding:2px}
+.stepper button{border:0;background:transparent;min-height:36px;min-width:40px;padding:0}
+.stepper span{min-width:3ch;text-align:center;font-variant-numeric:tabular-nums;font-weight:700}
 
 /* ---------- Overlays (song editor, picker, transfer) ---------- */
 .overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(6px);z-index:30;display:flex;align-items:flex-start;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) var(--gutter-r) calc(16px + env(safe-area-inset-bottom,0px)) var(--gutter-l);overflow:auto;overscroll-behavior:contain}
@@ -217,26 +214,27 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 
 <section id="stage" hidden aria-label="Stage mode">
   <div class="st-bar gutter">
-    <button id="st-exit">✎ Edit</button>
-    <button id="st-pick" class="st-pos">1 / 1 ▾</button>
-    <div class="st-tools">
-      <button id="st-inline" aria-pressed="false" title="Show chords inline over the words">Inline chords</button>
-      <button id="st-font-dn" aria-label="Smaller text">A−</button>
-      <button id="st-font-up" aria-label="Larger text">A+</button>
-      <select id="st-capo" aria-label="Capo"></select>
-      <div class="scrollctl" role="group" aria-label="Auto-scroll">
-        <button id="st-play" aria-label="Start auto-scroll">▶</button>
-        <button id="st-slow" aria-label="Slower">−</button>
-        <span class="spd" id="st-speed">3</span>
-        <button id="st-fast" aria-label="Faster">+</button>
-      </div>
-      <button id="st-full" aria-label="Full screen">⛶</button>
-    </div>
+    <button id="st-exit" class="ghost">Edit</button>
+    <button id="st-prev" class="ghost" aria-label="Previous song">‹</button>
+    <button id="st-pick" class="st-pos ghost">1 / 1</button>
+    <button id="st-next" class="ghost" aria-label="Next song">›</button>
+    <span class="sp"></span>
+    <button id="st-play" class="ghost" aria-label="Start auto-scroll">▶</button>
+    <button id="st-more" class="ghost" aria-label="Display settings">Aa</button>
   </div>
   <div class="st-body gutter" id="st-body"></div>
-  <button class="st-nav prev" id="st-prev" aria-label="Previous song">‹</button>
-  <button class="st-nav next" id="st-next" aria-label="Next song">›</button>
 </section>
+
+<div class="overlay" id="stset" hidden role="dialog" aria-modal="true" aria-label="Display settings">
+  <div class="sheet">
+    <div class="sh-head"><h2>Display</h2><button id="stset-close">Done</button></div>
+    <div class="setrow"><span>Text size</span><div class="stepper"><button id="st-font-dn" aria-label="Smaller text">−</button><span id="st-font-val">32</span><button id="st-font-up" aria-label="Larger text">+</button></div></div>
+    <div class="setrow"><span>Chords over the words</span><button id="st-inline" aria-pressed="false">Off</button></div>
+    <div class="setrow"><span>Capo</span><select id="st-capo" aria-label="Capo"></select></div>
+    <div class="setrow"><span>Auto-scroll speed</span><div class="stepper"><button id="st-slow" aria-label="Slower">−</button><span id="st-speed">3</span><button id="st-fast" aria-label="Faster">+</button></div></div>
+    <div class="setrow"><span>Full screen</span><button id="st-full">Toggle</button></div>
+  </div>
+</div>
 
 <div class="overlay" id="picker" hidden>
   <div class="sheet">
@@ -279,7 +277,7 @@ const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slic
 const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
 let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800)}
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#code').hidden)}
+function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#code').hidden||!$('#stset').hidden)}
 function show(sel,on){$(sel).hidden=!on;lockPage()}
 
 /* ---------- music theory ---------- */
@@ -329,9 +327,7 @@ const TRAD={
 'Kaga Sab Tan Khaiyo':{chords:'C# F# G#',lyrics:
 `{Doha · Baba Farid}
 [C#]Kaaga sab tan khaaiyo, [F#]chun chun khaaiyo [C#]maas
-[C#]Do naina mat khaaiyo, mohe [G#]piya milan ki [C#]aas
-
-{Repeat · add the couplets your version uses}`},
+[C#]Do naina mat khaaiyo, mohe [G#]piya milan ki [C#]aas`},
 'Chaap Tilak':{chords:'C# F# G#',lyrics:
 `{Sthayi}
 [C#]Chhaap tilak sab chheeni re mose [G#]naina mila[C#]ike
@@ -378,9 +374,7 @@ const TRAD={
 'Govinda Bolo Hari Gopal Bolo':{chords:'C# F# G#',lyrics:
 `{Chorus · repeat, build tempo}
 [C#]Govinda bolo Hari [G#]Gopal bolo
-[F#]Radha Raman Hari [G#]Govinda [C#]bolo
-
-{Verse · add your own lines}`},
+[F#]Radha Raman Hari [G#]Govinda [C#]bolo`},
 'Shri Krishna Govinda Hare Murare':{chords:'C# F# G#',lyrics:
 `{Chorus · repeat}
 [C#]Shri Krishna Govinda Hare [G#]Murare
@@ -404,9 +398,7 @@ const TRAD={
 
 {Verse}
 [C#]Har dam peera teri khair hove
-[F#]Naam-e-Ali beda paar laga, [G#]Jhoole [C#]Laalan
-
-{Sargam jugalbandi · two singers, others take alaps}`}
+[F#]Naam-e-Ali beda paar laga, [G#]Jhoole [C#]Laalan`}
 };
 
 /* ---------- state ---------- */
@@ -419,15 +411,15 @@ function defaultState(){return{
   updatedAt:0,
   items:[
     section('Slow / Soulful'),
-    song('Kaga Sab Tan Khaiyo','High note start.'),
+    song('Kaga Sab Tan Khaiyo'),
     song('Chaap Tilak'),song('Luka Chupi'),song('Kesariya Tera Ishq Hai Piya'),song('Krishna Nee Begane'),
-    song('Janani Janani','Swarams from Manargal Keten.'),
+    song('Janani Janani'),
     section('Medium Tempo'),
     song('Illahi'),song('Dooba Dooba'),song('Give Me Some Sunshine'),song('Roobaroo'),
     section('High Energy'),
     song('Mental Manadhil'),song('Luka Chup Na Jao Ji'),song('Govinda Bolo Hari Gopal Bolo'),song('Shri Krishna Govinda Hare Murare'),song('Ab Ke Sawan Aise Barse'),
     section('Finale'),
-    song('Dumadum Mast Kalandar','Slow, then fast. Sargam jugalbandi between two singers; the other two take alaps.')
+    song('Dumadum Mast Kalandar')
   ]}}
 function normalize(raw){
   const d=defaultState();const s=JSON.parse(JSON.stringify(raw||{}));
@@ -441,7 +433,9 @@ function normalize(raw){
   return out;
 }
 let state=normalize(ls.get(S_KEY,null)||defaultState());
-const prefs=Object.assign({fontSize:28,capo:0,inline:true,speed:3,lastId:null,editCode:''},ls.get(P_KEY,{}));
+const PLACEHOLDER_RE=/^\s*\{(?:Repeat · add the couplets your version uses|Verse · add your own lines|Sargam jugalbandi · two singers, others take alaps)\}\s*$/;
+function stripPlaceholders(st){let changed=false;for(const it of st.items){if(it.type!=='song')continue;const lines=it.lyrics.split('\n');const kept=lines.filter(l=>!PLACEHOLDER_RE.test(l));if(kept.length!==lines.length){it.lyrics=kept.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n+$/,'');changed=true}}return changed}
+const prefs=Object.assign({fontSize:32,capo:0,inline:true,speed:3,lastId:null,editCode:''},ls.get(P_KEY,{}));
 const savePrefs=()=>ls.set(P_KEY,prefs);
 let selId=null;
 const songs=()=>state.items.filter(i=>i.type==='song');
@@ -455,7 +449,7 @@ const sync={on:false,canWrite:true,remote:null,localDirty:false,pushing:false,pe
 function saveLocal(){ls.set(S_KEY,state)}
 function markChanged(){state.updatedAt=Date.now();saveLocal();if(sync.on&&sync.canWrite)schedulePush();else if(sync.on)sync.localDirty=true;refreshSync();if(!$('#stage').hidden)renderStage(true)}
 const schedulePush=debounce(()=>push(),700);
-function adoptRemote(remote){state=normalize(remote);saveLocal();sync.localDirty=false;renderHeader();renderList();if(!$('#song-dialog').hidden)renderEditor();if(!$('#stage').hidden)renderStage(true)}
+function adoptRemote(remote){state=normalize(remote);if(stripPlaceholders(state)&&sync.canWrite){state.updatedAt=Date.now();schedulePush()}saveLocal();sync.localDirty=false;renderHeader();renderList();if(!$('#song-dialog').hidden)renderEditor();if(!$('#stage').hidden)renderStage(true)}
 async function push(){
   if(!sync.on||!sync.canWrite)return;
   if(sync.pushing){sync.pending=true;return}
@@ -526,10 +520,11 @@ function renderLyricsHTML(sg,opts){
   }
   return html;
 }
-function chordRowHTML(sg,semis,flats){
+function chordRowHTML(sg,semis,flats,plain){
   let toks=chordTokens(sg.chords);
   if(!toks.length)toks=inlineChords(sg.lyrics);
   if(!toks.length)return'';
+  if(plain)return toks.map(t=>esc(transposeChord(t,semis,flats))).join(' ');
   return`<div class="chordrow">${toks.map(t=>parseChord(t)?`<span class="cc">${esc(transposeChord(t,semis,flats))}</span>`:`<span class="cx">${esc(t)}</span>`).join('')}</div>`;
 }
 function displayOpts(sg){
@@ -645,8 +640,7 @@ function openStage(id){
   stId=id||prefs.lastId||(songs()[0]||{}).id;
   if(!songs().some(s=>s.id===stId))stId=(songs()[0]||{}).id;
   show('#stage',true);
-  $('#st-inline').setAttribute('aria-pressed',prefs.inline);$('#st-speed').textContent=prefs.speed;
-  $('#st-capo').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i}"${i===prefs.capo?' selected':''}>${i?`Capo ${i}`:'No capo'}</option>`).join('');
+  syncStageSettings();
   renderStage();requestWake();
 }
 function closeStage(){stopScroll();show('#stage',false);releaseWake();if(document.fullscreenElement)document.exitFullscreen?.().catch(()=>{});if(stId){selId=stId;renderList()}}
@@ -657,22 +651,18 @@ function renderStage(keepScroll){
   if(!sg){stBody.innerHTML='<div class="st-empty">No songs in the setlist yet. Add some in Edit mode.</div>';return}
   const keep=keepScroll?stBody.scrollTop:0;
   prefs.lastId=sg.id;savePrefs();
-  $('#st-pick').textContent=`${i+1} / ${list.length} ▾`;
+  $('#st-pick').textContent=`${i+1} / ${list.length}`;
   $('#st-prev').disabled=i===0;$('#st-next').disabled=i===list.length-1;
   const o=displayOpts(sg);const pk=performKey(sg);
-  const capoTxt=prefs.capo?`<span>Capo ${prefs.capo} · ${esc(o.shapeKey)} shapes</span>`:'';
+  const capoTxt=prefs.capo?`<span class="capo">capo ${prefs.capo} · ${esc(o.shapeKey)} shapes</span>`:'';
   const next=list[i+1];
   const lyr=renderLyricsHTML(sg,{semis:o.semis,flats:o.flats,inline:prefs.inline});
+  const chords=chordRowHTML(sg,o.semis,o.flats,true);
   stBody.innerHTML=`
-    <div class="st-head">
-      <div class="st-sec">${esc(sectionOf(sg.id)||state.title)}</div>
-      <h1 class="st-song">${esc(sg.title)}</h1>
-      <div class="st-meta"><span class="keychip on">${esc(pk)}</span>${capoTxt}${sg.leads?`<span>${esc(sg.leads)}</span>`:''}</div>
-      ${sg.notes?`<div class="st-notes">${esc(sg.notes)}</div>`:''}
-    </div>
-    <div class="st-chords">${chordRowHTML(sg,o.semis,o.flats)}</div>
-    <div class="lyr" style="--lsz:${prefs.fontSize}px">${lyr||`<div class="st-empty">No lyrics yet for this song. Tap ✎ Edit, open it in the running order and paste the lyrics in.</div>`}</div>
-    <div class="st-next">${next?`Next: <b>${esc(next.title)}</b>${sectionOf(next.id)!==sectionOf(sg.id)?` · ${esc(sectionOf(next.id))}`:''}`:'Last song. Shubh Diwali.'}</div>`;
+    <div class="st-head"><h1 class="st-song">${esc(sg.title)}</h1><span class="keychip">${esc(pk)}</span>${capoTxt}</div>
+    ${chords?`<div class="st-chords">${chords}</div>`:''}
+    <div class="lyr" style="--lsz:${prefs.fontSize}px">${lyr||`<div class="st-empty">No lyrics yet. Tap Edit and paste them in.</div>`}</div>
+    <div class="st-next">${next?`Next · ${esc(next.title)}`:'Last song'}</div>`;
   stBody.scrollTop=keep;if(!keepScroll)scroll.acc=0;
 }
 function stepSong(d){const list=songs();const i=list.findIndex(s=>s.id===stId);const n=list[i+d];if(!n)return;stopScroll();stId=n.id;renderStage()}
@@ -680,10 +670,18 @@ $('#btn-stage').addEventListener('click',()=>openStage(selId));
 $('#st-exit').addEventListener('click',closeStage);
 $('#st-prev').addEventListener('click',()=>stepSong(-1));
 $('#st-next').addEventListener('click',()=>stepSong(1));
-$('#st-inline').addEventListener('click',e=>{prefs.inline=!prefs.inline;savePrefs();e.currentTarget.setAttribute('aria-pressed',prefs.inline);renderStage(true)});
-$('#st-font-dn').addEventListener('click',()=>{prefs.fontSize=Math.max(18,prefs.fontSize-2);savePrefs();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
-$('#st-font-up').addEventListener('click',()=>{prefs.fontSize=Math.min(48,prefs.fontSize+2);savePrefs();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
-$('#st-capo').addEventListener('change',e=>{prefs.capo=Number(e.target.value)||0;savePrefs();renderStage(true);toast(prefs.capo?`Capo ${prefs.capo}: chords shown as shapes`:'No capo: chords as they sound')});
+function syncStageSettings(){
+  const inl=$('#st-inline');inl.setAttribute('aria-pressed',prefs.inline);inl.textContent=prefs.inline?'On':'Off';
+  $('#st-speed').textContent=prefs.speed;$('#st-font-val').textContent=prefs.fontSize;
+  $('#st-capo').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i}"${i===prefs.capo?' selected':''}>${i?`Capo ${i}`:'None'}</option>`).join('');
+}
+$('#st-more').addEventListener('click',()=>{syncStageSettings();show('#stset',true)});
+$('#stset-close').addEventListener('click',()=>show('#stset',false));
+$('#stset').addEventListener('click',e=>{if(e.target===e.currentTarget)show('#stset',false)});
+$('#st-inline').addEventListener('click',()=>{prefs.inline=!prefs.inline;savePrefs();syncStageSettings();renderStage(true)});
+$('#st-font-dn').addEventListener('click',()=>{prefs.fontSize=Math.max(18,prefs.fontSize-2);savePrefs();syncStageSettings();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
+$('#st-font-up').addEventListener('click',()=>{prefs.fontSize=Math.min(56,prefs.fontSize+2);savePrefs();syncStageSettings();$('.lyr',stBody)?.style.setProperty('--lsz',prefs.fontSize+'px')});
+$('#st-capo').addEventListener('change',e=>{prefs.capo=Number(e.target.value)||0;savePrefs();renderStage(true)});
 $('#st-full').addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen?.().catch(()=>{});else stage.requestFullscreen?.().catch(()=>toast('Full screen is not available here'))});
 /* auto-scroll */
 const pxPerSec=()=>prefs.speed*prefs.speed*2+10; /* 1→12, 3→28, 5→60, 10→210 px/s */
@@ -707,7 +705,7 @@ stBody.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.client
 stBody.addEventListener('touchend',e=>{const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;if(Math.abs(dx)>70&&Math.abs(dy)<50)stepSong(dx<0?1:-1)},{passive:true});
 /* keyboard */
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(!$('#picker').hidden)show('#picker',false);else if(!$('#transfer').hidden)show('#transfer',false);else if(!$('#song-dialog').hidden)closeEditor();else if(!stage.hidden)closeStage();return}
+  if(e.key==='Escape'){if(!$('#stset').hidden)show('#stset',false);else if(!$('#picker').hidden)show('#picker',false);else if(!$('#transfer').hidden)show('#transfer',false);else if(!$('#song-dialog').hidden)closeEditor();else if(!stage.hidden)closeStage();return}
   if(stage.hidden)return;if(e.target.matches('input,textarea,select'))return;
   if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();stepSong(1)}
   else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();stepSong(-1)}
@@ -728,6 +726,7 @@ for(const ov of['#picker','#transfer'])$(ov).addEventListener('click',e=>{if(e.t
 $('#song-dialog').addEventListener('click',e=>{if(e.target===e.currentTarget)closeEditor()});
 
 /* ---------- boot ---------- */
+if(stripPlaceholders(state))state.updatedAt=Date.now();saveLocal();
 renderHeader();renderList();refreshSync();
 initSync();
 })();
