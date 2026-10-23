@@ -57,7 +57,6 @@ label.f>span{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:
 h1,h2,h3{text-wrap:balance;margin:0}
 .muted{color:var(--fg-muted)}
 .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px;font-size:13px;background:var(--bg-sunken);border:1px solid var(--line);white-space:nowrap}
-.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--fg-muted)}
 .pill.ok .dot{background:var(--good)} .pill.busy .dot{background:var(--warn)} .pill.off .dot{background:var(--fg-muted)} .pill.ro .dot{background:var(--label)} .pill.dirty .dot{background:var(--warn)}
 .keychip{display:inline-flex;align-items:center;border-radius:8px;padding:2px 8px;font-weight:700;background:var(--bg-sunken);border:1px solid var(--line);font-variant-numeric:tabular-nums}
 .keychip.on{background:var(--accent);color:var(--accent-ink);border-color:transparent}
@@ -66,14 +65,20 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .page{max-width:820px;margin:0 auto;padding-block:0 48px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;padding-block:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:8px;flex:1 1 360px;min-width:0;flex-wrap:wrap}
-.brand .mark{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:none;margin-right:2px}
 .brand input#set-title{flex:1 1 200px;font-family:var(--font-display);font-size:22px;font-weight:700;background:transparent;border-color:transparent;padding:4px 6px;min-height:0}
 .brand input#set-title:hover,.brand input#set-title:focus{border-color:var(--line);background:var(--bg-sunken)}
-.brand input#set-date{flex:none;width:12.5em;min-height:38px;padding:4px 10px;font-size:14px;color:var(--fg-muted);background:transparent;border-color:transparent}
-.brand input#set-date:hover,.brand input#set-date:focus{border-color:var(--line)}
 .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .setbar{display:flex;gap:16px 24px;align-items:flex-end;flex-wrap:wrap;padding-block:16px}
-.keypick{display:flex;flex-direction:column;gap:6px}
+.keypick{display:flex;align-items:center;gap:10px}
+.keybtn{min-height:40px;min-width:64px;font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;color:var(--accent);border-color:var(--line)}
+.keygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.keygrid button{min-height:52px;font-weight:700;font-size:18px}
+.sheet.narrow{width:min(420px,100%)}
+.ic{width:20px;height:20px;flex:none;display:block}
+button.icon{width:40px;padding:0}
+#sync-ic .ic{width:14px;height:14px}
+.pill.ok{color:var(--good)}
+.pill.ok #sync-text{color:var(--fg)}
 .keypick .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-muted)}
 .keyrow{display:flex;gap:4px;flex-wrap:wrap}
 .keyrow button{min-height:34px;padding:0 10px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -92,7 +97,7 @@ h1,h2,h3{text-wrap:balance;margin:0}
 .num{flex:none;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px;background:var(--bg-sunken);border:1px solid var(--line);color:var(--fg)}
 li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transparent}
 .ttl{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
-.ttl .t{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px}
+.ttl .t{font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17px}
 .ttl .s{font-size:13px;color:var(--fg-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ttl .s.warn{color:var(--warn)}
 .secname{flex:1;min-width:0;background:transparent;border-color:transparent;font-family:var(--font-display);font-weight:700;font-size:17px;letter-spacing:.02em;min-height:36px;padding:4px 6px}
@@ -130,12 +135,14 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 /* ---------- Stage mode ---------- */
 #stage{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;z-index:20;padding-top:env(safe-area-inset-top,0px)}
 .st-bar{display:flex;align-items:center;gap:8px;padding-block:8px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--bg);flex-wrap:nowrap}
-.st-bar button{min-height:48px}
+.st-bar button{min-height:44px}
 .st-pos{font-variant-numeric:tabular-nums;font-weight:700;min-width:5.5ch}
 .st-bar .sp{flex:1}
-.st-bar .ghost{border-color:transparent;min-width:44px}
+.st-bar .ghost{border-color:transparent;width:44px;padding:0}
 .st-bar .ghost.on{background:var(--accent);color:var(--accent-ink)}
-.st-bar .nav{min-width:64px;font-size:26px;font-weight:700;background:var(--bg-sunken);border-color:var(--line)}
+.st-bar .nav{width:52px;padding:0;background:var(--bg-sunken);border-color:var(--line)}
+.st-bar .nav .ic{width:24px;height:24px}
+.st-pos{min-width:auto!important;padding:0 10px!important;width:auto!important}
 .st-bar .nav:disabled{opacity:.3}
 .st-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-block:28px 48px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .st-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:10px}
@@ -174,24 +181,19 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 <div class="page gutter" id="page">
   <header class="topbar" id="topbar">
     <div class="brand">
-      <div class="mark" aria-hidden="true"></div>
-      <input id="set-title" aria-label="Setlist name" value="Diwali Night">
-      <input id="set-date" type="date" aria-label="Performance date">
+      <input id="set-title" aria-label="Setlist name" value="🪔 Diwali Night 2026">
     </div>
     <div class="actions">
-      <span class="pill off" id="sync"><span class="dot"></span><span id="sync-text">Local</span></span>
       <button id="btn-use-shared" hidden>Use shared version</button>
-      <button id="btn-theme" class="ghost" aria-label="Switch light or dark">Dark</button>
-      <button id="btn-transfer" class="ghost">Copy / paste data</button>
-      <button id="btn-stage" class="primary">Stage mode ▶</button>
+      <button id="btn-theme" class="icon ghost" aria-label="Switch to dark mode" title="Light / dark"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button id="btn-transfer" class="icon ghost" aria-label="Copy, paste or download setlist data" title="Setlist data"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l-4-4-4 4"/><path d="M12 12v9"/><path d="M20.4 18.4A5 5 0 0 0 18 9h-1.3A8 8 0 1 0 3 16.3"/></svg></button>
+      <button id="btn-stage" class="primary">Stage mode</button>
+      <span class="pill" id="sync"><span id="sync-ic"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span id="sync-text">Synced</span></span>
     </div>
   </header>
 
   <div class="setbar">
-    <div class="keypick">
-      <span class="lbl">Set key · every song transposes to this</span>
-      <div class="keyrow" id="set-key"></div>
-    </div>
+    <div class="keypick"><span class="lbl">Set key</span><button id="set-key" class="keybtn" aria-label="Change set key">C#</button></div>
   </div>
 
   <section class="list">
@@ -208,7 +210,7 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
   <div class="sheet">
     <div class="sh-head">
       <div class="nav"><button id="ed-cancel" class="ghost">Cancel</button><button id="ed-stage">Stage ▶</button></div>
-      <div class="nav"><button id="ed-prev" aria-label="Previous song">‹</button><button id="ed-next" aria-label="Next song">›</button><button id="ed-save" class="primary">Save &amp; publish</button></div>
+      <div class="nav"><button id="ed-prev" class="icon" aria-label="Previous song"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><button id="ed-next" class="icon" aria-label="Next song"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button><button id="ed-save" class="primary">Save &amp; publish</button></div>
     </div>
     <div class="editor" id="editor"></div>
   </div>
@@ -217,26 +219,33 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 <section id="stage" hidden aria-label="Stage mode">
   <div class="st-body gutter" id="st-body"></div>
   <div class="st-bar gutter">
-    <button id="st-exit" class="ghost">Edit</button>
+    <button id="st-exit" class="ghost" aria-label="Exit stage mode" title="Exit"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:scaleX(-1)"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
     <button id="st-pick" class="st-pos ghost">1 / 1</button>
     <span class="sp"></span>
-    <button id="st-prev" class="nav" aria-label="Previous song">‹</button>
-    <button id="st-next" class="nav" aria-label="Next song">›</button>
+    <button id="st-prev" class="nav" aria-label="Previous song"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button id="st-next" class="nav" aria-label="Next song"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
     <span class="sp"></span>
-    <button id="st-play" class="ghost" aria-label="Start auto-scroll">▶</button>
-    <button id="st-more" class="ghost" aria-label="Display settings">Aa</button>
+    <button id="st-play" class="ghost" aria-label="Start auto-scroll"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+    <button id="st-more" class="ghost" aria-label="Settings" title="Settings"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
   </div>
 </section>
 
 <div class="overlay" id="stset" hidden role="dialog" aria-modal="true" aria-label="Display settings">
   <div class="sheet">
-    <div class="sh-head"><h2>Display</h2><button id="stset-close">Done</button></div>
+    <div class="sh-head"><h2>Settings</h2><button id="stset-close">Done</button></div>
     <div class="setrow"><span>Text size</span><div class="stepper"><button id="st-font-dn" aria-label="Smaller text">−</button><span id="st-font-val">32</span><button id="st-font-up" aria-label="Larger text">+</button></div></div>
     <div class="setrow"><span>Chords over the words</span><button id="st-inline" aria-pressed="false">Off</button></div>
     <div class="setrow"><span>Capo</span><select id="st-capo" aria-label="Capo"></select></div>
     <div class="setrow"><span>Auto-scroll speed</span><div class="stepper"><button id="st-slow" aria-label="Slower">−</button><span id="st-speed">3</span><button id="st-fast" aria-label="Faster">+</button></div></div>
     <div class="setrow"><span>Appearance</span><button id="st-theme">Dark</button></div>
     <div class="setrow"><span>Full screen</span><button id="st-full">Toggle</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="keydlg" hidden role="dialog" aria-modal="true" aria-label="Set key">
+  <div class="sheet narrow">
+    <div class="sh-head"><h2>Set key</h2><button id="keydlg-close">Close</button></div>
+    <div class="keygrid" id="key-list"></div>
   </div>
 </div>
 
@@ -272,7 +281,7 @@ const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slic
 const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
 let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800)}
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#stset').hidden)}
+function lockPage(){document.documentElement.classList.toggle('locked',!$('#stage').hidden||!$('#song-dialog').hidden||!$('#picker').hidden||!$('#transfer').hidden||!$('#stset').hidden||!$('#keydlg').hidden)}
 function show(sel,on){$(sel).hidden=!on;lockPage()}
 
 /* ---------- music theory ---------- */
@@ -401,7 +410,7 @@ const S_KEY='diwali-set/state',P_KEY='diwali-set/prefs';
 function song(title,notes){const t=TRAD[title];return{type:'song',id:uid(),title,key:'C#',perform:'',leads:'',chords:t?t.chords:'',lyrics:t?t.lyrics:'',notes:notes||''}}
 function section(name){return{type:'section',id:uid(),name}}
 function defaultState(){return{
-  title:'Diwali Night',date:'2026-11-14',key:'C#',
+  title:'🪔 Diwali Night 2026',date:'2026-11-14',key:'C#',
   lineup:'2 lead female singers · 2 male singers on guitar · 4 chorus',
   updatedAt:0,
   items:[
@@ -429,12 +438,13 @@ function normalize(raw){
 }
 let state=normalize(ls.get(S_KEY,null)||defaultState());
 const PLACEHOLDER_RE=/^\s*\{(?:Repeat · add the couplets your version uses|Verse · add your own lines|Sargam jugalbandi · two singers, others take alaps)\}\s*$/;
-function stripPlaceholders(st){let changed=false;for(const it of st.items){if(it.type!=='song')continue;const lines=it.lyrics.split('\n');const kept=lines.filter(l=>!PLACEHOLDER_RE.test(l));if(kept.length!==lines.length){it.lyrics=kept.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n+$/,'');changed=true}}return changed}
+function stripPlaceholders(st){let changed=false;if(st.title==='Diwali Night'){st.title='🪔 Diwali Night 2026';changed=true}for(const it of st.items){if(it.type!=='song')continue;const lines=it.lyrics.split('\n');const kept=lines.filter(l=>!PLACEHOLDER_RE.test(l));if(kept.length!==lines.length){it.lyrics=kept.join('\n').replace(/\n{3,}/g,'\n\n').replace(/\n+$/,'');changed=true}}return changed}
 const prefs=Object.assign({fontSize:32,capo:0,inline:true,speed:3,lastId:null},ls.get(P_KEY,{}));
 const savePrefs=()=>ls.set(P_KEY,prefs);
 function applyTheme(){const t=prefs.theme;if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme');
   const dark=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);
-  for(const id of['#btn-theme','#st-theme']){const b=$(id);if(b)b.textContent=dark?'Light':'Dark'}}
+  const tb=$('#btn-theme');if(tb){tb.innerHTML=dark?'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>':'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';tb.setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode')}
+  const sb=$('#st-theme');if(sb)sb.textContent=dark?'Light':'Dark'}
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);prefs.theme=dark?'light':'dark';savePrefs();applyTheme()}
 $('#btn-theme').addEventListener('click',toggleTheme);$('#st-theme').addEventListener('click',toggleTheme);
 applyTheme();
@@ -481,15 +491,15 @@ async function pull(){
   }catch{sync.offline=true;refreshSync()}
 }
 function refreshSync(){
-  const pill=$('#sync'),txt=$('#sync-text'),useBtn=$('#btn-use-shared');
-  pill.className='pill';useBtn.hidden=true;
-  if(!sync.on){pill.classList.add('off');txt.textContent='Saved on this device only';return}
-  if(sync.noStore){pill.classList.add('dirty');txt.textContent='Storage not set up on the server';return}
-  if(sync.offline){pill.classList.add('dirty');txt.textContent='Offline · saved on this device';return}
-  if(!sync.canWrite){pill.classList.add(sync.localDirty?'dirty':'ro');txt.textContent=sync.localDirty?'Local edits (not shared)':'Shared · view only';useBtn.hidden=!sync.localDirty||!sync.remote;return}
-  if(sync.status==='saving'){pill.classList.add('busy');txt.textContent='Saving…';return}
-  if(sync.status==='error'){pill.classList.add('dirty');txt.textContent='Sync problem · saved locally';return}
-  pill.classList.add('ok');txt.textContent='Shared with the band';
+  const pill=$('#sync'),txt=$('#sync-text'),ic=$('#sync-ic'),useBtn=$('#btn-use-shared');
+  pill.className='pill';useBtn.hidden=true;ic.hidden=true;
+  if(!sync.on){txt.textContent='This device only';return}
+  if(sync.noStore){txt.textContent='Storage not set up';return}
+  if(sync.offline){txt.textContent='Offline';return}
+  if(!sync.canWrite){txt.textContent=sync.localDirty?'Not synced':'View only';useBtn.hidden=!sync.localDirty||!sync.remote;return}
+  if(sync.status==='saving'){txt.textContent='Syncing…';return}
+  if(sync.status==='error'){txt.textContent='Not synced';return}
+  pill.classList.add('ok');ic.hidden=false;txt.textContent='Synced';
 }
 function initSync(){
   sync.on=true;refreshSync();pull();
@@ -531,8 +541,8 @@ function displayOpts(sg){
 
 /* ---------- rendering: edit mode ---------- */
 function renderHeader(){
-  $('#set-title').value=state.title;$('#set-date').value=state.date;
-  $('#set-key').innerHTML=KEYS.map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===state.key}">${k}</button>`).join('');
+  $('#set-title').value=state.title;
+  $('#set-key').textContent=state.key;
   $('#count').textContent=`· ${songs().length} songs`;
 }
 function renderList(){
@@ -607,8 +617,9 @@ $('#ed-next').addEventListener('click',()=>switchSong(1));
 
 /* header + list events */
 $('#set-title').addEventListener('input',e=>{state.title=e.target.value;markChanged()});
-$('#set-date').addEventListener('change',e=>{state.date=e.target.value;markChanged()});
-$('#set-key').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;state.key=b.dataset.k;markChanged();renderHeader();renderList();toast(`Set key: ${state.key}`)});
+$('#set-key').addEventListener('click',()=>{$('#key-list').innerHTML=KEYS.map(k=>`<button type="button" data-k="${k}" aria-pressed="${k===state.key}">${k}</button>`).join('');show('#keydlg',true)});
+$('#keydlg-close').addEventListener('click',()=>show('#keydlg',false));
+$('#keydlg').addEventListener('click',e=>{if(e.target===e.currentTarget){show('#keydlg',false);return}const b=e.target.closest('button[data-k]');if(!b)return;state.key=b.dataset.k;markChanged();renderHeader();renderList();show('#keydlg',false);toast(`Set key: ${state.key}`)});
 $('#btn-add-song').addEventListener('click',()=>{const s=song('New song');s.key=state.key;state.items.push(s);markChanged();renderHeader();renderList();openEditor(s.id);$('#ed-title')?.select()});
 $('#btn-add-sec').addEventListener('click',()=>{state.items.push(section('New section'));markChanged();renderList();$('#items li:last-child .secname')?.select()});
 const itemsEl=$('#items');
@@ -704,8 +715,8 @@ function tick(ts){
   if(Math.ceil(stBody.scrollTop+stBody.clientHeight)>=stBody.scrollHeight-1){stopScroll();return}
   scroll.raf=requestAnimationFrame(tick);
 }
-function startScroll(){if(scroll.on)return;scroll.on=true;scroll.last=performance.now();scroll.acc=0;$('#st-play').textContent='❚❚';$('#st-play').classList.add('on');$('#st-play').setAttribute('aria-label','Pause auto-scroll');scroll.raf=requestAnimationFrame(tick)}
-function stopScroll(){scroll.on=false;cancelAnimationFrame(scroll.raf);$('#st-play').textContent='▶';$('#st-play').classList.remove('on');$('#st-play').setAttribute('aria-label','Start auto-scroll')}
+function startScroll(){if(scroll.on)return;scroll.on=true;scroll.last=performance.now();scroll.acc=0;$('#st-play').innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>';$('#st-play').classList.add('on');$('#st-play').setAttribute('aria-label','Pause auto-scroll');scroll.raf=requestAnimationFrame(tick)}
+function stopScroll(){scroll.on=false;cancelAnimationFrame(scroll.raf);$('#st-play').innerHTML='<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';$('#st-play').classList.remove('on');$('#st-play').setAttribute('aria-label','Start auto-scroll')}
 $('#st-play').addEventListener('click',()=>scroll.on?stopScroll():startScroll());
 $('#st-slow').addEventListener('click',()=>{prefs.speed=Math.max(1,prefs.speed-1);savePrefs();$('#st-speed').textContent=prefs.speed});
 $('#st-fast').addEventListener('click',()=>{prefs.speed=Math.min(10,prefs.speed+1);savePrefs();$('#st-speed').textContent=prefs.speed});
