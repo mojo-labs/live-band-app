@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Setlist Sheet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:opsz,wght@9..144,700&display=swap">
+<style>
+:root{--bg:#ffffff;--fg:#141413;--muted:#6b6a65;--line:#e3e1d9;--chord:#b8542f;--accent:#c96442;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--display:"Fraunces",Georgia,serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body)}
+.bar{position:sticky;top:0;display:flex;align-items:center;gap:8px;padding:10px max(16px,env(safe-area-inset-left,0px));background:var(--bg);border-bottom:1px solid var(--line);z-index:2;flex-wrap:wrap}
+.bar a,.bar button{font:inherit;font-size:14px;color:var(--fg);background:#f0eee6;border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;cursor:pointer}
+.bar button.primary{background:var(--accent);color:#fff;border-color:transparent;font-weight:700}
+.bar .sp{flex:1}
+.bar label{font-size:14px;display:flex;align-items:center;gap:6px}
+.bar select{font:inherit;font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.sheet{padding:14px max(16px,env(safe-area-inset-left,0px)) 40px;column-count:2;column-gap:28px;column-rule:1px solid var(--line);font-size:var(--fs,10.5px);line-height:1.3}
+.head{column-span:all;display:flex;align-items:baseline;gap:12px;margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.head h1{font-family:var(--display);font-size:18px;margin:0}
+.head span{color:var(--muted);font-size:12px}
+.sec{font-family:var(--display);font-weight:700;font-size:1.25em;margin:.9em 0 .3em;break-after:avoid;color:var(--accent)}
+.song{margin:0 0 1.1em;break-inside:avoid-column}
+.song.split{break-inside:auto}
+.st{display:flex;align-items:baseline;gap:6px;font-weight:700;font-size:1.15em;margin-bottom:.15em;break-after:avoid}
+.st .n{color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.st .k{margin-left:auto;font-size:.85em;color:var(--chord)}
+.cl{color:var(--chord);font-weight:700;margin-bottom:.25em}
+.ln{white-space:pre-wrap;margin:0}
+.ln.has{margin-top:.15em}
+.seg{display:inline-block;vertical-align:bottom}
+.ch{display:block;height:1.1em;line-height:1.1;color:var(--chord);font-weight:700;font-size:.95em}
+.lbl{font-size:.8em;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:.5em 0 .1em}
+.gap{height:.45em}
+.empty{color:var(--muted);font-style:italic}
+.msg{padding:40px 16px;color:var(--muted)}
+@media (max-width:640px){.sheet{column-count:1}}
+@media print{
+  @page{size:A4;margin:10mm}
+  .bar{display:none}
+  .sheet{padding:0;column-count:2}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="/">Back</a>
+  <span class="sp"></span>
+  <label>Text <select id="fs"><option value="9px">XS</option><option value="10.5px" selected>S</option><option value="12px">M</option></select></label>
+  <label>Lyrics <select id="mode"><option value="inline" selected>Chords over words</option><option value="plain">Lyrics only</option></select></label>
+  <button id="print" class="primary">Print / Save PDF</button>
+</div>
+<div class="sheet" id="sheet"><div class="msg">Loading setlist…</div></div>
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NOTE_IDX={C:0,'B#':0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,Fb:4,F:5,'E#':5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11,Cb:11};
+const SHARPS=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const FLATS=['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const KEYS=['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const keyIdx=k=>NOTE_IDX[k]??0;
+const prefersFlats=k=>/^(F|Bb|Eb|Ab|Db|Gb|Cb)$/.test(k);
+const keyName=(idx,flats)=>(flats?FLATS:SHARPS)[((idx%12)+12)%12];
+function parseChord(tok){
+  const m=/^([A-G])([#b]?)([^\/]*)(?:\/([A-G])([#b]?))?$/.exec(tok);
+  if(!m)return null;
+  if(!/^(?:m|maj|min|dim|aug|sus|add|M|\+|-|°|ø|º|\d|\(|\)|#|b)*$/.test(m[3]))return null;
+  return{root:m[1]+m[2],suffix:m[3],bass:m[4]?m[4]+m[5]:null};
+}
+function transposeChord(tok,semis,flats){
+  const c=parseChord(tok);if(!c)return tok;
+  let out=keyName(keyIdx(c.root)+semis,flats)+c.suffix;
+  if(c.bass)out+='/'+keyName(keyIdx(c.bass)+semis,flats);
+  return out;
+}
+const diatonic=k=>{const i=keyIdx(k),f=prefersFlats(k);return[keyName(i,f),keyName(i+2,f)+'m',keyName(i+4,f)+'m',keyName(i+5,f),keyName(i+7,f),keyName(i+9,f)+'m',keyName(i+11,f)+'dim']};
+
+/* ---------- lyric parsing ---------- */
+const CH_RE=/\[([^\]]+)\]/g;
+function parseLine(line){
+  const t=line.trim();
+  if(!t)return{type:'empty'};
+  if(/^\{.*\}$/.test(t)||/^#/.test(t))return{type:'label',text:t.replace(/^\{|\}$/g,'').replace(/^#+\s*/,'').trim()};
+  const segs=[];let last=0,m,any=false;CH_RE.lastIndex=0;
+  while((m=CH_RE.exec(line))){
+    const text=line.slice(last,m.index);
+    if(segs.length===0){if(text)segs.push({chord:null,text});}
+    else segs[segs.length-1].text=text;
+    segs.push({chord:m[1],text:''});any=true;last=CH_RE.lastIndex;
+  }
+  if(segs.length)segs[segs.length-1].text=line.slice(last);else segs.push({chord:null,text:line});
+  if(any&&segs.every(s=>!s.text.trim()))return{type:'chords',chords:segs.filter(s=>s.chord).map(s=>s.chord)};
+  return{type:'lyric',segs,hasChord:any};
+}
+function inlineChords(lyrics){const out=[];let m;CH_RE.lastIndex=0;while((m=CH_RE.exec(lyrics||'')))if(!out.includes(m[1]))out.push(m[1]);return out}
+function chordTokens(str){return(str||'').split(/[\s,|]+/).filter(Boolean)}
+let state=null;
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const prefs=Object.assign({fs:'10.5px',mode:'inline'},ls.get('diwali-set/sheet',{}));
+$('#fs').value=prefs.fs;$('#mode').value=prefs.mode;
+function lyricHTML(sg,semis,flats,inline){
+  const T=c=>transposeChord(c,semis,flats);let html='',blank=0;
+  for(const raw of (sg.lyrics||'').split(/\r?\n/)){
+    const p=parseLine(raw);
+    if(p.type==='empty'){if(++blank===1)html+='<div class="gap"></div>';continue}
+    blank=0;
+    if(p.type==='label'){html+=`<div class="lbl">${esc(p.text)}</div>`;continue}
+    if(p.type==='chords'){if(inline)html+=`<div class="ln cl">${p.chords.map(c=>esc(T(c))).join('   ')}</div>`;continue}
+    if(!inline||!p.hasChord){html+=`<div class="ln">${esc(p.segs.map(s=>s.text).join(''))}</div>`;continue}
+    html+='<div class="ln has">'+p.segs.map(s=>`<span class="seg"><span class="ch">${s.chord?esc(T(s.chord)):''}</span><span>${esc(s.text)||'&nbsp;'}</span></span>`).join('')+'</div>';
+  }
+  return html;
+}
+function render(){
+  document.documentElement.style.setProperty('--fs',prefs.fs);
+  if(!state){return}
+  const key=state.key||'C#';const flats=prefersFlats(key);let n=0;
+  let html=`<div class="head"><h1>${esc(state.title||'Setlist')}</h1><span>Key ${esc(key)} · ${state.items.filter(i=>i.type==='song').length} songs</span></div>`;
+  for(const it of state.items||[]){
+    if(it.type==='section'){html+=`<div class="sec">${esc(it.name)}</div>`;continue}
+    if(it.type!=='song')continue;n++;
+    const semis=((keyIdx(key)-keyIdx(it.key||key))%12+12)%12;
+    let toks=chordTokens(it.chords);if(!toks.length)toks=inlineChords(it.lyrics);
+    const cl=toks.length?`<div class="cl">${toks.map(t=>esc(transposeChord(t,semis,flats))).join('  ')}</div>`:'';
+    const body=lyricHTML(it,semis,flats,prefs.mode==='inline');
+    const long=(it.lyrics||'').split('\n').length>40;
+    html+=`<div class="song${long?' split':''}"><div class="st"><span class="n">${n}.</span><span>${esc(it.title)}</span><span class="k">${esc(key)}</span></div>${cl}${body||'<div class="empty">No lyrics yet</div>'}</div>`;
+  }
+  $('#sheet').innerHTML=html;
+}
+$('#fs').addEventListener('change',e=>{prefs.fs=e.target.value;ls.set('diwali-set/sheet',prefs);render()});
+$('#mode').addEventListener('change',e=>{prefs.mode=e.target.value;ls.set('diwali-set/sheet',prefs);render()});
+$('#print').addEventListener('click',()=>window.print());
+fetch('/api/setlist',{cache:'no-store'}).then(r=>r.json()).then(j=>{state=j&&j.data;if(!state){state=ls.get('diwali-set/state',null)}if(!state){$('#sheet').innerHTML='<div class="msg">No setlist found.</div>';return}render()})
+  .catch(()=>{state=ls.get('diwali-set/state',null);if(state)render();else $('#sheet').innerHTML='<div class="msg">Could not load the setlist. Check your connection and reload.</div>'});
+})();
+</script>
+</body>
+</html>
