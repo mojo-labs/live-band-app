@@ -111,7 +111,8 @@ li.sel .num{background:var(--accent);color:var(--accent-ink);border-color:transp
 .editor{display:flex;flex-direction:column;gap:14px;min-width:0}
 .editor .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
 .editor .ttl-in{font-family:var(--font-display);font-size:22px;font-weight:700}
-.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;position:sticky;top:-16px;z-index:2;background:var(--bg);padding:8px 0;margin:-8px 0}
+.chips.to-lyrics button{border-color:var(--accent)}
 .chips button{min-height:32px;padding:0 10px;font-weight:700;border-radius:8px;color:var(--chord)}
 .hint{font-size:13px;color:var(--fg-muted);line-height:1.5;margin:0}
 .hint code{background:var(--bg-sunken);padding:1px 5px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
@@ -586,7 +587,7 @@ function renderEditor(){
     </div>
     <label class="f"><span>Notes</span><textarea id="ed-notes" rows="2">${esc(sg.notes)}</textarea></label>
     <label class="f"><span>Chords</span><input id="ed-chords" value="${esc(sg.chords)}" placeholder="C# G# A#m F#"></label>
-    <div class="chips" id="ed-dia">${dia.map(c=>`<button type="button" data-c="${c}">${c}</button>`).join('')}</div>
+    <div class="chips" id="ed-dia">${[...new Set([...dia,...chordTokens(sg.chords).filter(parseChord)])].map(c=>`<button type="button" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
     <label class="f"><span>Lyrics</span><textarea id="lyrics-in" spellcheck="false">${esc(sg.lyrics)}</textarea></label>
     <div class="actions"><button id="ed-preview-toggle" aria-pressed="${prefs.inline}">Preview with inline chords</button></div>
     <div class="preview" id="ed-preview"></div>
@@ -599,7 +600,20 @@ function renderEditor(){
   $('#ed-notes').addEventListener('input',e=>upd('notes',e.target.value));
   $('#ed-chords').addEventListener('input',e=>{upd('chords',e.target.value);renderPreview(sg)});
   $('#lyrics-in').addEventListener('input',e=>{upd('lyrics',e.target.value);renderPreview(sg)});
-  $('#ed-dia').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;const inp=$('#ed-chords');inp.value=(inp.value.trim()+' '+b.dataset.c).trim();upd('chords',inp.value);renderPreview(sg)});
+  const lyr=$('#lyrics-in');let lyricsActive=false;
+  $('#editor').addEventListener('focusin',e=>{lyricsActive=e.target===lyr;$('#ed-dia').classList.toggle('to-lyrics',lyricsActive)});
+  /* keep the lyrics field focused (and the keyboard up) when a chord chip is pressed */
+  $('#ed-dia').addEventListener('pointerdown',e=>{if(lyricsActive&&e.target.closest('button[data-c]'))e.preventDefault()});
+  $('#ed-dia').addEventListener('mousedown',e=>{if(lyricsActive&&e.target.closest('button[data-c]'))e.preventDefault()});
+  $('#ed-dia').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;
+    if(lyricsActive){
+      const tag=`[${b.dataset.c}]`,a=lyr.selectionStart??lyr.value.length,z=lyr.selectionEnd??a;
+      lyr.focus();
+      lyr.setRangeText(tag,a,z,'end');
+      upd('lyrics',lyr.value);renderPreview(sg);
+      return;
+    }
+    const inp=$('#ed-chords');inp.value=(inp.value.trim()+' '+b.dataset.c).trim();upd('chords',inp.value);renderPreview(sg)});
   $('#ed-preview-toggle').addEventListener('click',e=>{prefs.inline=!prefs.inline;savePrefs();e.target.setAttribute('aria-pressed',prefs.inline);renderPreview(sg)});
   $('#ed-dup').addEventListener('click',()=>{const i2=state.items.findIndex(x=>x.id===sg.id);const c=JSON.parse(JSON.stringify(sg));c.id=uid();c.title=sg.title+' (copy)';state.items.splice(i2+1,0,c);markChanged();renderHeader();selId=c.id;draft=JSON.parse(JSON.stringify(c));renderList();renderEditor();toast('Duplicated')});
   let armed=false;$('#ed-del').addEventListener('click',e=>{if(!armed){armed=true;e.target.textContent='Tap again to delete';e.target.classList.remove('ghost');setTimeout(()=>{armed=false;const b=$('#ed-del');if(b){b.textContent='Delete song';b.classList.add('ghost')}},2500);return}state.items=state.items.filter(x=>x.id!==sg.id);selId=null;markChanged();renderHeader();closeEditor();toast('Song deleted')});
