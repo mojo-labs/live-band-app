@@ -607,7 +607,9 @@ function renderEditor(){
   $('#ed-dia').addEventListener('mousedown',e=>{if(lyricsActive&&e.target.closest('button[data-c]'))e.preventDefault()});
   $('#ed-dia').addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(!b)return;
     if(lyricsActive){
-      const tag=`[${b.dataset.c}]`,a=lyr.selectionStart??lyr.value.length,z=lyr.selectionEnd??a;
+      const a=lyr.selectionStart??lyr.value.length,z=lyr.selectionEnd??a,v=lyr.value;
+      const before=a>0&&!/\s/.test(v[a-1])?' ':'',after=z<v.length&&!/\s/.test(v[z])?' ':'';
+      const tag=`${before}[${b.dataset.c}]${after}`;
       lyr.focus();
       lyr.setRangeText(tag,a,z,'end');
       upd('lyrics',lyr.value);renderPreview(sg);
